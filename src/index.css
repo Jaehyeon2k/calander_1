@@ -70,9 +70,6 @@
   --event-text: #ffffff;
 }
 
-/* -------------------------
-   Base
-------------------------- */
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
@@ -82,13 +79,9 @@ body {
   font-family: "Pretendard", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
-/* 링크 */
 a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* -------------------------
-   Layout helpers
-------------------------- */
 .page-root {
   max-width: 1100px;
   margin: 24px auto;
@@ -205,6 +198,11 @@ a:hover { text-decoration: underline; }
   --fc-event-bg-color: var(--event-bg);
   --fc-event-border-color: var(--event-bg);
   --fc-event-text-color: var(--event-text);
+  
+  --fc-button-hover-bg-color: var(--fc-button-bg);
+  --fc-button-hover-border-color: var(--fc-button-border);
+  --fc-button-active-bg-color: var(--fc-button-bg);
+  --fc-button-active-border-color: var(--fc-button-border);
 }
 
 /* ✅ “칸” 제거(표 테두리 제거) */
@@ -291,17 +289,3 @@ nav {
   color: var(--text);
 }
 
-/* 이벤트 전체 */
-.fc-daygrid-event {
-  white-space: normal !important;   /* 줄바꿈 허용 */
-  height: auto !important;          /* 높이 자동 */
-  line-height: 1.2;
-}
-
-/* 이벤트 제목 */
-.fc-daygrid-event .fc-event-title {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  word-break: keep-all;             /* 한글 깨짐 방지 */
-}
