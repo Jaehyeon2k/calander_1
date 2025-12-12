@@ -1,0 +1,307 @@
+/* =========================================================
+   YJU Calendar - Global Theme (Light/Dark) + UI Kit
+   - ThemeContext가 <html data-theme="dark|light"> 설정
+   - FullCalendar 격자선(칸) 제거
+   - Login/Signup 중앙 카드 스타일
+========================================================= */
+
+/* -------------------------
+   Theme Variables
+------------------------- */
+:root {
+  --bg: #0b0c10;
+  --surface: #11131a;
+  --surface-2: #171a22;
+  --text: #e9eef4;
+  --muted: rgba(233, 238, 244, 0.72);
+  --border: rgba(233, 238, 244, 0.10);
+
+  --primary: #2f6df6;
+  --primary-2: #1d4ed8;
+
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.14);
+
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  --radius: 16px;
+
+  /* FullCalendar bridge */
+  --fc-page-bg: var(--bg);
+  --fc-bg: var(--surface);
+  --fc-neutral-bg: rgba(255, 255, 255, 0.05);
+  --fc-border-color: transparent; /* ✅ 격자선 제거 핵심 */
+  --fc-today-bg: rgba(124, 196, 255, 0.12);
+
+  --fc-button-bg: rgba(255, 255, 255, 0.06);
+  --fc-button-text: var(--text);
+  --fc-button-border: rgba(255, 255, 255, 0.14);
+
+  --event-bg: #3a86ff;
+  --event-text: #ffffff;
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f1f4fb;
+  --text: #121521;
+  --muted: rgba(18, 21, 33, 0.62);
+  --border: rgba(18, 21, 33, 0.10);
+
+  --primary: #2f6df6;
+  --primary-2: #1d4ed8;
+
+  --input-bg: #f4f6fb;
+  --input-border: rgba(18, 21, 33, 0.14);
+
+  --shadow: 0 18px 45px rgba(18, 21, 33, 0.12);
+
+  --fc-page-bg: var(--bg);
+  --fc-bg: var(--surface);
+  --fc-neutral-bg: rgba(18, 21, 33, 0.05);
+  --fc-border-color: transparent; /* ✅ 라이트도 격자선 제거 */
+  --fc-today-bg: rgba(80, 145, 245, 0.12);
+
+  --fc-button-bg: #ffffff;
+  --fc-button-text: var(--text);
+  --fc-button-border: rgba(18, 21, 33, 0.16);
+
+  --event-bg: #2f6df6;
+  --event-text: #ffffff;
+}
+
+/* -------------------------
+   Base
+------------------------- */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Pretendard", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* 링크 */
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* -------------------------
+   Layout helpers
+------------------------- */
+.page-root {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 16px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin: 0 0 8px;
+  letter-spacing: -0.2px;
+}
+
+.page-subtitle {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+/* ✅ 로그인/회원가입/관리 페이지용 중앙 정렬 래퍼 */
+.center-wrap {
+  min-height: calc(100vh - 90px);
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+/* -------------------------
+   Card / Form UI
+------------------------- */
+.card {
+  width: min(560px, 92vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 1.6rem;
+  letter-spacing: -0.2px;
+}
+
+.form-grid { display: grid; gap: 12px; }
+
+.form-row { display: grid; gap: 6px; text-align: left; }
+
+.form-row label {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+}
+
+.input:focus {
+  border-color: rgba(47, 109, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(47, 109, 246, 0.18);
+}
+
+.btn-row { display: grid; gap: 10px; margin-top: 6px; }
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn:hover { filter: brightness(1.03); }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border: none;
+  color: #fff;
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.helper {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* -------------------------
+   FullCalendar Theme
+------------------------- */
+.fc {
+  --fc-page-bg-color: var(--fc-page-bg);
+  --fc-border-color: var(--fc-border-color);
+  --fc-neutral-bg-color: var(--fc-neutral-bg);
+  --fc-today-bg-color: var(--fc-today-bg);
+  --fc-button-bg-color: var(--fc-button-bg);
+  --fc-button-text-color: var(--fc-button-text);
+  --fc-button-border-color: var(--fc-button-border);
+  --fc-event-bg-color: var(--event-bg);
+  --fc-event-border-color: var(--event-bg);
+  --fc-event-text-color: var(--event-text);
+}
+
+/* ✅ “칸” 제거(표 테두리 제거) */
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 0 !important;
+}
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section > td,
+.fc .fc-scrollgrid-section-header > td {
+  border: 0 !important;
+}
+
+/* 달력 바탕을 카드처럼 */
+.calendar-shell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* 요일 헤더 */
+.fc .fc-col-header-cell {
+  background: transparent;
+  font-weight: 800;
+}
+.fc .fc-col-header-cell-cushion {
+  color: var(--muted) !important;
+  padding: 10px 0;
+}
+
+/* 날짜 숫자 */
+.fc .fc-daygrid-day-number {
+  color: var(--muted) !important;
+  font-weight: 700;
+  padding: 8px;
+}
+
+/* 오늘 하이라이트 */
+.fc .fc-day-today {
+  background: var(--fc-today-bg) !important;
+  border-radius: 14px;
+}
+
+/* 이벤트 바 */
+.fc .fc-daygrid-event {
+  border-radius: 10px !important;
+  padding: 3px 8px !important;
+  border: none !important;
+  font-weight: 700;
+}
+
+/* 헤더 버튼 */
+.fc .fc-button {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  font-weight: 800;
+  padding: 8px 14px !important;
+}
+
+/* 캘린더 타이틀 */
+.fc .fc-toolbar-title {
+  font-weight: 900;
+  letter-spacing: -0.2px;
+  color: var(--text) !important;
+}
+
+/* (선택) 월 뷰에서 “셀 배경”을 아주 약하게 */
+.fc .fc-daygrid-day-frame {
+  border-radius: 14px;
+}
+
+/* -------------------------
+   (Optional) Make nav look ok if you have one
+------------------------- */
+nav {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  color: var(--text);
+}
+
+/* 이벤트 전체 */
+.fc-daygrid-event {
+  white-space: normal !important;   /* 줄바꿈 허용 */
+  height: auto !important;          /* 높이 자동 */
+  line-height: 1.2;
+}
+
+/* 이벤트 제목 */
+.fc-daygrid-event .fc-event-title {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: keep-all;             /* 한글 깨짐 방지 */
+}

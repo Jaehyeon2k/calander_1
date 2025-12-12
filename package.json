@@ -1,0 +1,56 @@
+{
+  "name": "yju-calendar-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fullcalendar/core": "6.1.10",
+    "@fullcalendar/daygrid": "6.1.10",
+    "@fullcalendar/interaction": "6.1.10",
+    "@fullcalendar/list": "6.1.10",
+    "@fullcalendar/react": "6.1.10",
+    "@fullcalendar/timegrid": "6.1.10",
+    "axios": "^1.13.2",
+    "cheerio": "^1.1.2",
+    "dayjs": "^1.11.19",
+    "firebase": "^12.5.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.28.0",
+    "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "json-server": "^0.17.4",
+    "serve": "^14.2.5"
+  },
+
+"scripts": {
+  "start": "concurrently \"npm run serve:api\" \"npm run serve:school\" \"npm run start:app\"",
+  "start:app": "npm run build && serve -s build -l 3000",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "serve:school": "node src/server/schoolCrawlerServer.js",
+  "serve:api": "json-server --watch db.json --port 4000 --delay 300"
+},
+  "proxy": "http://localhost:4000",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
