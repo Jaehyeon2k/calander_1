@@ -1,9 +1,13 @@
+// src/pages/DeptSchedule.jsx
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
 import { useAuth } from "../auth/AuthContext";
 import { isAdmin } from "../auth/admin";
+
+import CalendarFrame from "../components/CalendarFrame";
+import MonthCalendar from "../components/MonthCalendar";
+import EventTable from "../components/EventTable";
+import FormGrid from "../components/FormGrid";
 
 const api = axios.create({ baseURL: "http://localhost:4000" });
 
@@ -17,7 +21,6 @@ const DEPTS = [
 
 function toYmd(v) {
   if (!v) return "";
-  // db.json이 "YYYY-MM-DD"면 그대로
   if (typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
   const d = new Date(v);
   if (Number.isNaN(d.getTime())) return "";
@@ -35,17 +38,14 @@ export default function DeptSchedule() {
   const [events, setEvents] = useState([]);
   const [msg, setMsg] = useState("");
 
-  // 폼(내 일정관리처럼: 아래에서 추가/수정)
-  const [editId, setEditId] = useState(null); // null이면 create, 있으면 edit
+  const [editId, setEditId] = useState(null);
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [allDay, setAllDay] = useState(true);
 
   const load = useCallback(async () => {
     setMsg("");
     try {
-      // ✅ 학과별로만 로드
       const res = await api.get("/events", {
         params: { scope: "DEPT", deptId },
       });
@@ -60,7 +60,6 @@ export default function DeptSchedule() {
     load();
   }, [load]);
 
-  // ✅ 현재 선택한 학과 일정만 (표/캘린더 둘 다 이걸 씀)
   const deptEvents = useMemo(() => {
     return events
       .filter((e) => e.scope === "DEPT" && String(e.deptId) === String(deptId))
@@ -73,7 +72,6 @@ export default function DeptSchedule() {
       title: e.title,
       start: e.start,
       end: e.end || undefined,
-      allDay: e.allDay ?? true,
     }));
   }, [deptEvents]);
 
@@ -82,7 +80,6 @@ export default function DeptSchedule() {
     setTitle("");
     setStart("");
     setEnd("");
-    setAllDay(true);
   };
 
   const onSubmit = async (e) => {
@@ -106,18 +103,16 @@ export default function DeptSchedule() {
           title: title.trim(),
           start,
           end: end || "",
-          allDay,
-          deptId, // ✅ 학과 유지
+          deptId,
         });
       } else {
         await api.post("/events", {
           title: title.trim(),
           start,
           end: end || "",
-          allDay,
           scope: "DEPT",
           deptId,
-          memo: "", // 기존 구조 맞추기(사용 안 함)
+          memo: "",
           color: "blue",
           ownerEmail: user?.email || "",
         });
@@ -137,7 +132,6 @@ export default function DeptSchedule() {
     setTitle(row.title || "");
     setStart(toYmd(row.start));
     setEnd(toYmd(row.end));
-    setAllDay(row.allDay ?? true);
   };
 
   const onDelete = async (id) => {
@@ -155,184 +149,90 @@ export default function DeptSchedule() {
     }
   };
 
+  const columns = useMemo(() => {
+    const base = [
+      { label: "제목" },
+      { label: "시작", width: 140 },
+      { label: "끝", width: 140 },
+    ];
+    return admin ? [...base, { label: "관리", width: 170 }] : base;
+  }, [admin]);
+
   return (
-    <div
-      className={`page-root page-wide dept-page ${
-        admin ? "is-admin" : "is-user"
-      }`}
-    >
-      <div className="page-head">
-        <div>
-          <h2 className="page-title-lg">학과 일정</h2>
-          <p className="page-subtitle">
-            학과를 선택하면 해당 학과 일정만 표시됩니다.
-            {admin ? " (관리자: CRUD 가능)" : ""}
-          </p>
-        </div>
-
-        <div className="page-actions">
-          <select
-            className="dept-select"
-            value={deptId}
-            onChange={(e) => {
-              setDeptId(e.target.value);
-              resetForm();
-            }}
-          >
-            {DEPTS.map((d) => (
-              <option key={d.id} value={d.id}>
-                {d.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {msg && <p className="form-msg error">{msg}</p>}
-      <div className="manage-panel">
-        <div className="manage-panel-title">학과 일정 캘린더</div>
-
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView="dayGridMonth"
-          locale="ko"
-          events={fcEvents}
-          height="auto"
-          dayMaxEvents
-          displayEventTime={false}
-          fixedWeekCount={false}
-          showNonCurrentDates
-          headerToolbar={{
-            left: "title",
-            center: "",
-            right: "today prev,next",
+    <CalendarFrame
+      className={`dept-page ${admin ? "is-admin" : "is-user"}`}
+      title="학과 일정"
+      subtitle={`학과를 선택하면 해당 학과 일정만 표시됩니다.${admin ? " (관리자: CRUD 가능)" : ""}`}
+      calendarTitle="학과 일정 캘린더"
+      topRight={
+        <select
+          className="dept-select"
+          value={deptId}
+          onChange={(e) => {
+            setDeptId(e.target.value);
+            resetForm();
           }}
-          buttonText={{ today: "today" }}
-          className="fc-clean"
-          // ✅ eventClick 없음 = 클릭해도 삭제 안됨
-        />
-      </div>
+        >
+          {DEPTS.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+            </option>
+          ))}
+        </select>
+      }
+      bottom={
+        <>
+          {admin && (
+            <div className="card">
+              <div className="card-title">{editId ? "일정 수정" : "새 일정 추가"}</div>
 
-      {/* ✅ 관리자만: 등록/수정 폼 (스샷처럼) */}
-      {admin && (
-        <div className="card">
-          <div className="card-title">
-            {editId ? "일정 수정" : "새 일정 추가"}
-          </div>
-
-          <form className="dept-form" onSubmit={onSubmit}>
-            <div className="dept-form-grid">
-              <div className="field">
-                <label>제목</label>
-                <input
-                  className="input"
-                  placeholder="예) 팀플 발표, 과제 마감"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-
-              <div className="field">
-                <label>시작</label>
-                <input
-                  className="input"
-                  type="date"
-                  value={start}
-                  onChange={(e) => setStart(e.target.value)}
-                />
-              </div>
-
-              <div className="field">
-                <label>끝(선택)</label>
-                <input
-                  className="input"
-                  type="date"
-                  value={end}
-                  onChange={(e) => setEnd(e.target.value)}
-                />
-              </div>
-
-              <div className="dept-form-actions">
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    checked={allDay}
-                    onChange={(e) => setAllDay(e.target.checked)}
-                  />
-                  <span>종일</span>
-                </label>
-
-                <button className="btn btn-primary" type="submit">
-                  {editId ? "저장" : "추가"}
-                </button>
-
-                {editId && (
-                  <button className="btn" type="button" onClick={resetForm}>
-                    취소
-                  </button>
-                )}
-              </div>
+              <FormGrid
+                titleValue={title}
+                onTitleChange={setTitle}
+                startValue={start}
+                onStartChange={setStart}
+                endValue={end}
+                onEndChange={setEnd}
+                endOptionalLabel="(선택)"
+                primaryText={editId ? "저장" : "추가"}
+                showCancel={!!editId}
+                onCancel={resetForm}
+                onSubmit={onSubmit}
+              />
             </div>
-          </form>
-        </div>
-      )}
+          )}
 
-      {/* ✅ 리스트(표): 선택한 학과 일정들이 밑에 쭉 뜸 */}
-      <div className="card">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>제목</th>
-              <th style={{ width: 140 }}>시작</th>
-              <th style={{ width: 140 }}>끝</th>
-              {admin && <th style={{ width: 170 }}>관리</th>}
-            </tr>
-          </thead>
-
-          <tbody>
-            {deptEvents.map((row) => (
+          <EventTable
+            title={admin ? "학과 일정 목록 (관리자)" : "학과 일정 목록"}
+            columns={columns}
+            rows={deptEvents}
+            emptyText="등록된 학과 일정이 없습니다."
+            renderRow={(row) => (
               <tr key={row.id}>
                 <td>{row.title}</td>
                 <td>{toYmd(row.start)}</td>
                 <td>{toYmd(row.end)}</td>
 
-                {admin && (
+                {admin ? (
                   <td>
                     <div className="row-actions">
-                      <button
-                        className="btn"
-                        type="button"
-                        onClick={() => onEdit(row)}
-                      >
+                      <button className="btn" type="button" onClick={() => onEdit(row)}>
                         수정
                       </button>
-                      <button
-                        className="btn danger"
-                        type="button"
-                        onClick={() => onDelete(row.id)}
-                      >
+                      <button className="btn danger" type="button" onClick={() => onDelete(row.id)}>
                         삭제
                       </button>
                     </div>
                   </td>
-                )}
-              </tr>
-            ))}
-
-            {deptEvents.length === 0 && (
-              <tr>
-                <td
-                  colSpan={admin ? 4 : 3}
-                  className="muted"
-                  style={{ padding: 14 }}
-                >
-                  등록된 학과 일정이 없습니다.
-                </td>
+                ) : null}
               </tr>
             )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          />
+        </>
+      }
+    >
+      {msg && <p className="form-msg error">{msg}</p>}
+      <MonthCalendar events={fcEvents} />
+    </CalendarFrame>
   );
 }

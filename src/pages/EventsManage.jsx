@@ -1,10 +1,12 @@
 // src/pages/EventsManage.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-
 import { useAuth } from "../auth/AuthContext";
 import { fetchEvents, createEvent, updateEvent, deleteEvent } from "../api/eventsApi";
+
+import CalendarFrame from "../components/CalendarFrame";
+import MonthCalendar from "../components/MonthCalendar";
+import EventTable from "../components/EventTable";
+import FormGrid from "../components/FormGrid";
 
 function toDateInputValue(d) {
   if (!d) return "";
@@ -15,7 +17,6 @@ function toDateInputValue(d) {
   return `${y}-${m}-${day}`;
 }
 
-// ✅ 중요도(색상) 옵션: 저장값은 key(red/blue/green)
 const COLOR_OPTIONS = [
   { key: "red", label: "높음", bg: "#ef4444", border: "#dc2626", text: "#ffffff" },
   { key: "blue", label: "보통", bg: "#3b82f6", border: "#2563eb", text: "#ffffff" },
@@ -23,7 +24,7 @@ const COLOR_OPTIONS = [
 ];
 
 function getColorStyle(colorKey) {
-  return COLOR_OPTIONS.find((x) => x.key === colorKey) || COLOR_OPTIONS[1]; // 기본 blue
+  return COLOR_OPTIONS.find((x) => x.key === colorKey) || COLOR_OPTIONS[1];
 }
 
 export default function EventsManage() {
@@ -36,13 +37,10 @@ export default function EventsManage() {
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [allDay, setAllDay] = useState(true);
   const [editId, setEditId] = useState(null);
 
-  // ✅ 메모 모달 상태: { id, title, memo, color }
-  const [memoModal, setMemoModal] = useState(null);
+  const [memoModal, setMemoModal] = useState(null); // { id, title, memo, color }
 
-  // 내 개인 일정만
   const myEvents = useMemo(() => {
     const email = user?.email || user?.user?.email || "";
     return events.filter((e) => {
@@ -52,7 +50,6 @@ export default function EventsManage() {
     });
   }, [events, user]);
 
-  // FullCalendar용 변환 (+ 색상 반영 + extendedProps로 memo/color 유지)
   const fcEvents = useMemo(() => {
     return myEvents.map((e) => {
       const c = getColorStyle(e.color);
@@ -61,15 +58,7 @@ export default function EventsManage() {
         title: e.title,
         start: e.start,
         end: e.end || undefined,
-        allDay: e.allDay ?? true,
-
-        // ✅ 클릭 시 모달에 쓸 데이터
-        extendedProps: {
-          memo: e.memo || "",
-          color: e.color || "blue",
-        },
-
-        // ✅ 캘린더 표시 색상
+        extendedProps: { memo: e.memo || "", color: e.color || "blue" },
         backgroundColor: c.bg,
         borderColor: c.border,
         textColor: c.text,
@@ -100,7 +89,6 @@ export default function EventsManage() {
     setTitle("");
     setStart("");
     setEnd("");
-    setAllDay(true);
   };
 
   const onSubmit = async (e) => {
@@ -116,24 +104,19 @@ export default function EventsManage() {
 
     try {
       if (editId) {
-        // ✅ 기존 일정 수정(제목/기간만)
         const updated = await updateEvent(editId, {
           title: title.trim(),
           start,
           end: end || "",
-          allDay,
         });
         setEvents((prev) => prev.map((x) => (String(x.id) === String(editId) ? updated : x)));
       } else {
-        // ✅ 새 일정 생성 시 memo/color 기본값 포함
         const created = await createEvent({
           title: title.trim(),
           start,
           end: end || "",
-          allDay,
           scope: "USER",
           ownerEmail: email,
-
           memo: "",
           color: "blue",
         });
@@ -150,7 +133,6 @@ export default function EventsManage() {
     setTitle(row.title || "");
     setStart(toDateInputValue(row.start));
     setEnd(toDateInputValue(row.end));
-    setAllDay(row.allDay ?? true);
   };
 
   const onDelete = async (id) => {
@@ -168,7 +150,6 @@ export default function EventsManage() {
     }
   };
 
-  // ✅ 캘린더 일정 클릭 → 메모 모달 오픈
   const onCalendarClick = (info) => {
     const ev = info.event;
     setMemoModal({
@@ -179,7 +160,6 @@ export default function EventsManage() {
     });
   };
 
-  // ✅ 메모 + 중요도(색상)만 저장
   const saveMemo = async () => {
     if (!memoModal) return;
     setErrMsg("");
@@ -187,138 +167,65 @@ export default function EventsManage() {
     try {
       const patch = { memo: memoModal.memo, color: memoModal.color };
       const updated = await updateEvent(memoModal.id, patch);
-
-      setEvents((prev) =>
-        prev.map((x) => (String(x.id) === String(memoModal.id) ? updated : x))
-      );
+      setEvents((prev) => prev.map((x) => (String(x.id) === String(memoModal.id) ? updated : x)));
       setMemoModal(null);
     } catch (e) {
       setErrMsg(e?.message || "메모 저장 실패");
     }
   };
 
+  const columns = useMemo(
+    () => [
+      { label: "제목" },
+      { label: "중요도", width: 130 },
+      { label: "시작", width: 140 },
+      { label: "끝", width: 140 },
+      { label: "관리", width: 190 },
+    ],
+    []
+  );
+
   return (
-    <div className="page-wide">
-      {/* 헤더 */}
-      <div className="page-head">
-        <h2 className="page-title">내 일정 관리</h2>
-        <p className="page-subtitle">로그인한 사용자 기준으로 개인 일정을 관리합니다.</p>
-      </div>
+    <CalendarFrame
+      title="내 일정 관리"
+      subtitle="로그인한 사용자 기준으로 개인 일정을 관리합니다."
+      calendarTitle="내 일정 캘린더"
+      bottom={
+        <>
+          {(loading || errMsg) && (
+            <p className={`form-msg ${errMsg ? "error" : ""}`}>
+              {loading ? "불러오는 중..." : errMsg}
+            </p>
+          )}
 
-      {/* 캘린더 */}
-      <div className="manage-panel">
-        <div className="manage-panel-title">내 일정 캘린더</div>
-        <div className="fc-clean">
-          <FullCalendar
-            plugins={[dayGridPlugin]}
-            initialView="dayGridMonth"
-            locale="ko"
-            height="auto"
-            events={fcEvents}
-            dayMaxEvents
-            displayEventTime={false}
-            eventClick={onCalendarClick}
-            headerToolbar={{
-              left: "title",
-              center: "",
-              right: "today prev,next",
-            }}
-          />
-        </div>
+          <div className="card">
+            <div className="card-title">{editId ? "일정 수정" : "새 일정 추가"}</div>
 
-        <div className="manage-hint">
-          💡 일정 바를 클릭하면 <b>메모</b>와 <b>중요도</b>(색상)을 설정할 수 있어요.
-        </div>
-      </div>
-
-      <div className="section-divider" />
-
-      {/* 메시지 */}
-      {(loading || errMsg) && (
-        <p className={`form-msg ${errMsg ? "error" : ""}`}>
-          {loading ? "불러오는 중..." : errMsg}
-        </p>
-      )}
-
-      {/* 폼 */}
-      <div className="card">
-        <div className="card-title">{editId ? "일정 수정" : "새 일정 추가"}</div>
-
-        <form onSubmit={onSubmit}>
-          <div className="dept-form-grid">
-            <div className="field">
-              <label>제목</label>
-              <input
-                className="input"
-                placeholder="예) 팀플 발표, 과제 마감"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-
-            <div className="field">
-              <label>시작</label>
-              <input
-                type="date"
-                className="input"
-                value={start}
-                onChange={(e) => setStart(e.target.value)}
-              />
-            </div>
-
-            <div className="field">
-              <label>끝</label>
-              <input
-                type="date"
-                className="input"
-                value={end}
-                onChange={(e) => setEnd(e.target.value)}
-              />
-            </div>
-
-            <div className="dept-form-actions">
-              <label className="check">
-                <input
-                  type="checkbox"
-                  checked={allDay}
-                  onChange={(e) => setAllDay(e.target.checked)}
-                />
-                <span>종일</span>
-              </label>
-
-              <button className="btn btn-primary" type="submit">
-                {editId ? "저장" : "추가"}
-              </button>
-
-              {editId && (
-                <button className="btn" type="button" onClick={resetForm}>
-                  취소
-                </button>
-              )}
-            </div>
+            <FormGrid
+              titleValue={title}
+              onTitleChange={setTitle}
+              startValue={start}
+              onStartChange={setStart}
+              endValue={end}
+              onEndChange={setEnd}
+              primaryText={editId ? "저장" : "추가"}
+              showCancel={!!editId}
+              onCancel={resetForm}
+              onSubmit={onSubmit}
+            />
           </div>
-        </form>
-      </div>
 
-      <div className="section-divider" />
-
-      {/* 목록 */}
-      <div className="manage-panel">
-        <div className="manage-panel-title">일정 목록</div>
-
-        <table className="table manage-table-wide">
-          <thead>
-            <tr>
-              <th>제목</th>
-              <th style={{ width: 130 }}>중요도</th>
-              <th style={{ width: 140 }}>시작</th>
-              <th style={{ width: 140 }}>끝</th>
-              <th style={{ width: 190 }}>관리</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myEvents.map((row) => {
+          <EventTable
+            title="일정 목록"
+            columns={columns}
+            rows={myEvents}
+            emptyText="등록된 개인 일정이 없습니다."
+            className="manage-table-wide"
+            renderRow={(row) => {
               const c = getColorStyle(row.color || "blue");
+              const label =
+                COLOR_OPTIONS.find((x) => x.key === (row.color || "blue"))?.label || "보통";
+
               return (
                 <tr key={row.id}>
                   <td className="title-cell">
@@ -332,19 +239,19 @@ export default function EventsManage() {
                       style={{ background: c.bg, borderColor: c.border, color: c.text }}
                       title={row.color}
                     >
-                      {COLOR_OPTIONS.find((x) => x.key === (row.color || "blue"))?.label || "보통"}
+                      {label}
                     </span>
                   </td>
 
                   <td>{toDateInputValue(row.start)}</td>
                   <td>{toDateInputValue(row.end)}</td>
+
                   <td>
                     <div className="row-actions">
                       <button className="btn" type="button" onClick={() => onEdit(row)}>
                         수정
                       </button>
 
-                      {/* ✅ 테이블에서도 메모 편집 가능하게 */}
                       <button
                         className="btn"
                         type="button"
@@ -367,20 +274,17 @@ export default function EventsManage() {
                   </td>
                 </tr>
               );
-            })}
+            }}
+          />
+        </>
+      }
+    >
+      <MonthCalendar events={fcEvents} onEventClick={onCalendarClick} />
 
-            {myEvents.length === 0 && !loading && (
-              <tr>
-                <td colSpan={5} className="muted" style={{ padding: 14 }}>
-                  등록된 개인 일정이 없습니다.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="manage-hint">
+        💡 일정 바를 클릭하면 <b>메모</b>와 <b>중요도</b>(색상)을 설정할 수 있어요.
       </div>
 
-      {/* ✅ 메모 모달 */}
       {memoModal && (
         <div className="memo-overlay" onClick={() => setMemoModal(null)}>
           <div className="memo-modal" onClick={(e) => e.stopPropagation()}>
@@ -427,6 +331,6 @@ export default function EventsManage() {
           </div>
         </div>
       )}
-    </div>
+    </CalendarFrame>
   );
 }
