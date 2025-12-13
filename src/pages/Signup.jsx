@@ -20,9 +20,12 @@ export default function Signup() {
 
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      
-      if (name.trim()) {
-        await updateProfile(cred.user, { displayName: name.trim() });
+
+      const displayName = name.trim() || email.split("@")[0];
+
+      // firebase 표시명
+      if (displayName) {
+        await updateProfile(cred.user, { displayName });
       }
       await refreshUser();
       nav("/calendar", { replace: true });
@@ -39,37 +42,14 @@ export default function Signup() {
         <form onSubmit={onSignup}>
           <div className="form-row">
             <label className="form-label">이름(표시명)</label>
-            <input
-              className="input"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="홍길동"
-            />
           </div>
 
           <div className="form-row">
             <label className="form-label">이메일</label>
-            <input
-              className="input"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@naver.com"
-            />
           </div>
 
           <div className="form-row">
             <label className="form-label">비밀번호</label>
-            <input
-              className="input"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="8자 이상 권장"
-            />
           </div>
 
           {msg && <p className="form-msg error">{msg}</p>}

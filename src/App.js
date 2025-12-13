@@ -8,6 +8,7 @@ import Signup from "./pages/Signup";
 import AuthProvider, { useAuth } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { ThemeProvider, useTheme } from "./theme/ThemeContext";
+import DeptSchedule from "./pages/DeptSchedule";
 
 // 상단 네비게이션 바
 function NavBar() {
@@ -41,6 +42,7 @@ function NavBar() {
       <Link to="/manage" style={linkStyle}>
         내 일정 관리
       </Link>
+      <Link to="/dept" style={linkStyle}>학과 일정</Link>
 
       {/* 오른쪽 영역 */}
       <div
@@ -144,6 +146,12 @@ export default function App() {
                 </div>
               }
             />
+            <Route element={<ProtectedRoute />}>
+  <Route path="/calendar" element={<CalendarPage />} />
+  <Route path="/manage" element={<EventsManage />} />
+  <Route path="/dept" element={<DeptSchedule />} />
+</Route>
+
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

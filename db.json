@@ -1,114 +1,160 @@
 {
   "events": [
     {
-      "title": "ㅎㅇㅁㅂZ",
-      "start": "2025-12-12",
-      "end": "2025-12-15",
+      "id": 101,
+      "title": "컴정 중간고사",
+      "start": "2025-10-21",
+      "end": "",
       "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "wwg8947@naver.com",
-      "memo": "테스트",
-      "color": "red",
-      "id": 29
+      "scope": "DEPT",
+      "deptId": "CS",
+      "memo": "",
+      "color": "blue"
     },
     {
-      "title": "AA",
-      "start": "2025-12-12",
+      "title": "123",
+      "start": "2025-12-13",
       "end": "",
       "allDay": true,
       "scope": "USER",
-      "ownerEmail": "wwg8947@naver.com",
-      "memo": "QQ",
+      "ownerEmail": "wmspfl2673@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 2
+    },
+    {
+      "title": "1234",
+      "start": "2025-12-13",
+      "end": "",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "wmspfl2673@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 3
+    },
+    {
+      "title": "33333",
+      "start": "2025-12-13",
+      "end": "",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "wmspfl2673@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 6
+    },
+    {
+      "title": "1",
+      "start": "2025-12-13",
+      "end": "",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "wmspfl2673@gmail.com",
+      "memo": "",
+      "color": "red",
+      "id": 7
+    },
+    {
+      "title": "123",
+      "start": "2025-12-13",
+      "end": "",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
       "color": "green",
-      "id": 30
+      "id": 8
+    },
+    {
+      "title": "123",
+      "start": "2025-12-13",
+      "end": "",
+      "allDay": false,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 9
+    },
+    {
+      "title": "324123",
+      "start": "2025-12-30",
+      "end": "2026-01-02",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 10
+    },
+    {
+      "title": "123214213",
+      "start": "2025-12-19",
+      "end": "2025-12-27",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
+      "color": "red",
+      "id": 11
+    },
+    {
+      "title": "12323",
+      "start": "2025-12-12",
+      "end": "",
+      "allDay": false,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 12
+    },
+    {
+      "title": "124123",
+      "start": "2025-12-12",
+      "end": "",
+      "allDay": false,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 13
+    },
+    {
+      "title": "123123214213",
+      "start": "2025-12-26",
+      "end": "",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "test8@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 14
     },
     {
       "title": "ㅁㄴㅇㄹ",
       "start": "2025-12-13",
       "end": "",
       "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "test@a.com",
+      "scope": "DEPT",
+      "deptId": "CS",
       "memo": "",
       "color": "blue",
-      "id": 31
-    },
-    {
-      "title": "발표",
-      "start": "2025-12-31",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "test@a.com",
-      "memo": "ㅁㄴㅇㄹㄹㅇㄴㅁㄹ",
-      "color": "blue",
-      "id": 32
-    },
-    {
-      "title": "과제",
-      "start": "2025-12-13",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "test@gmail.cc",
-      "memo": "",
-      "color": "green",
-      "id": 33
-    },
-    {
-      "title": "123123",
-      "start": "2025-12-13",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "wmspfl1@gmail.com",
-      "memo": "",
-      "color": "blue",
-      "id": 34
-    },
-    {
-      "title": "123123321321",
-      "start": "2025-12-25",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "wmspfl1@gmail.com",
-      "memo": "",
-      "color": "red",
-      "id": 35
-    },
-    {
-      "title": "asdf",
-      "start": "2025-12-13",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
       "ownerEmail": "wmspfl2673@gmail.com",
+      "id": 102
+    },
+    {
+      "title": "테스트",
+      "start": "2025-12-13",
+      "end": "2025-12-25",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "CS",
       "memo": "",
       "color": "blue",
-      "id": 36
-    },
-    {
-      "title": "fdfdf",
-      "start": "2026-01-09",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
       "ownerEmail": "wmspfl2673@gmail.com",
-      "memo": "",
-      "color": "red",
-      "id": 37
-    },
-    {
-      "title": "ㅇㄱ수ㅛ",
-      "start": "2025-12-30",
-      "end": "",
-      "allDay": true,
-      "scope": "USER",
-      "ownerEmail": "wmspfl2673@gmail.com",
-      "memo": "",
-      "color": "green",
-      "id": 38
+      "id": 103
     }
   ]
 }

@@ -3,6 +3,7 @@
    - ThemeContext가 <html data-theme="dark|light"> 설정
    - FullCalendar 격자선(칸) 제거
    - Login/Signup 중앙 카드 스타일
+   - ✅ FullCalendar 이벤트 제목 2줄 표시(말줄임) + 잘림 방지
 ========================================================= */
 
 /* -------------------------
@@ -70,6 +71,9 @@
   --event-text: #ffffff;
 }
 
+/* -------------------------
+   Base
+------------------------- */
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
@@ -79,9 +83,13 @@ body {
   font-family: "Pretendard", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
+/* 링크 */
 a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* -------------------------
+   Layout helpers
+------------------------- */
 .page-root {
   max-width: 1100px;
   margin: 24px auto;
@@ -130,7 +138,6 @@ a:hover { text-decoration: underline; }
 }
 
 .form-grid { display: grid; gap: 12px; }
-
 .form-row { display: grid; gap: 6px; text-align: left; }
 
 .form-row label {
@@ -174,9 +181,7 @@ a:hover { text-decoration: underline; }
   color: #fff;
 }
 
-.btn-ghost {
-  background: transparent;
-}
+.btn-ghost { background: transparent; }
 
 .helper {
   margin-top: 12px;
@@ -198,7 +203,7 @@ a:hover { text-decoration: underline; }
   --fc-event-bg-color: var(--event-bg);
   --fc-event-border-color: var(--event-bg);
   --fc-event-text-color: var(--event-text);
-  
+
   --fc-button-hover-bg-color: var(--fc-button-bg);
   --fc-button-hover-border-color: var(--fc-button-border);
   --fc-button-active-bg-color: var(--fc-button-bg);
@@ -248,7 +253,7 @@ a:hover { text-decoration: underline; }
   border-radius: 14px;
 }
 
-/* 이벤트 바 */
+/* 이벤트 바(기본 스타일) */
 .fc .fc-daygrid-event {
   border-radius: 10px !important;
   padding: 3px 8px !important;
@@ -289,3 +294,176 @@ nav {
   color: var(--text);
 }
 
+/* =========================================================
+   ✅ 핵심: 이벤트 제목 2줄 표시 + 잘림 방지
+   - 12월 16일처럼 긴 제목이 한 줄에서 잘리는 문제 해결
+========================================================= */
+
+/* 이벤트 전체: 줄바꿈 허용 + 높이 자동 */
+.fc .fc-daygrid-event {
+  white-space: normal !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+}
+
+/* 이벤트 제목: 2줄까지만 보여주고 넘치면 ... */
+.fc .fc-daygrid-event .fc-event-title {
+  white-space: normal !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+
+  word-break: keep-all;                  /* 한글 단어 깨짐 방지 */
+}
+
+/* 일부 브라우저/테마에서 감싸는 div가 잘라버리는 경우 방지 */
+.fc .fc-daygrid-event-harness {
+  overflow: visible !important;
+}
+
+/* (선택) 셀 높이가 너무 낮아서 2줄이 잘리는 경우 대비 */
+.fc .fc-daygrid-day-frame {
+  min-height: 110px; /* 필요하면 120~140으로 조금 올려 */
+}
+.school-filterbar{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 2px 14px;
+  justify-content: flex-start;
+}
+
+.school-filterbtn{
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.school-filterbtn:hover{
+  filter: brightness(1.05);
+}
+
+.school-filterbtn.is-active{
+  border-color: rgba(47, 109, 246, 0.55);
+  background: rgba(47, 109, 246, 0.16);
+}
+/* ===== 학과 일정/학사일정 공통: 스샷 같은 깔끔한 레이아웃 ===== */
+.page-wide{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 14px;
+}
+
+.page-head{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.page-title-lg{
+  margin: 0;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.page-actions{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 학과 선택 */
+.dept-select{
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 800;
+}
+
+.dept-badge{
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  font-weight: 900;
+}
+
+/* 카드 제거 느낌(스샷처럼) */
+.calendar-clean{
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* FullCalendar 버튼/타이틀 정리 */
+.calendar-clean .fc .fc-toolbar-title{
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+
+.calendar-clean .fc .fc-button{
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.85);
+  color: rgba(0,0,0,0.75);
+  font-weight: 800;
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .calendar-clean .fc .fc-button{
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.82);
+}
+
+.calendar-clean .fc .fc-button:hover{
+  filter: brightness(1.02);
+}
+
+.calendar-clean .fc .fc-button:focus{
+  box-shadow: none;
+}
+
+/* 관리자 폼도 너무 튀지 않게 */
+.dept-admin{
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.dept-admin-title{
+  margin: 0 0 10px;
+  font-weight: 900;
+}
+
+.dept-admin-form{
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+}
+
+@media (max-width: 820px){
+  .page-head{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .dept-admin-form{
+    grid-template-columns: 1fr;
+  }
+}
