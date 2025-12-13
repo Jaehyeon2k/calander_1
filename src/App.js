@@ -9,6 +9,7 @@ import AuthProvider, { useAuth } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { ThemeProvider, useTheme } from "./theme/ThemeContext";
 import DeptSchedule from "./pages/DeptSchedule";
+import TimetablePage from "./pages/TimetablePage";
 
 // 상단 네비게이션 바
 function NavBar() {
@@ -42,7 +43,12 @@ function NavBar() {
       <Link to="/manage" style={linkStyle}>
         내 일정 관리
       </Link>
-      <Link to="/dept" style={linkStyle}>학과 일정</Link>
+      <Link to="/dept" style={linkStyle}>
+        학과 일정
+      </Link>
+      <Link to="/timetable" style={linkStyle}>
+        시간표
+      </Link>
 
       {/* 오른쪽 영역 */}
       <div
@@ -72,9 +78,7 @@ function NavBar() {
         {/* 로그인 영역 */}
         {user ? (
           <>
-            <span style={{ marginRight: 4 }}>
-              {user.displayName}
-            </span>
+            <span style={{ marginRight: 4 }}>{user.displayName}</span>
             <button
               onClick={logout}
               style={{
@@ -128,6 +132,8 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/manage" element={<EventsManage />} />
+              <Route path="/dept" element={<DeptSchedule />} />
+              <Route path="/timetable" element={<TimetablePage />} />
             </Route>
             {/* 공개 구간 */}
             <Route path="/login" element={<Login />} />
@@ -147,11 +153,11 @@ export default function App() {
               }
             />
             <Route element={<ProtectedRoute />}>
-  <Route path="/calendar" element={<CalendarPage />} />
-  <Route path="/manage" element={<EventsManage />} />
-  <Route path="/dept" element={<DeptSchedule />} />
-</Route>
-
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/manage" element={<EventsManage />} />
+              <Route path="/dept" element={<DeptSchedule />} />
+              <Route path="/timetable" element={<TimetablePage />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
