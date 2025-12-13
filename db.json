@@ -188,6 +188,16 @@
       "color": "blue",
       "ownerEmail": "root@gmail.com",
       "id": 5002
+    },
+    {
+      "title": "ㄴㅇㅁㄴㅇㄹ",
+      "start": "2025-12-14",
+      "end": "",
+      "scope": "USER",
+      "ownerEmail": "root@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 5003
     }
   ]
 }
