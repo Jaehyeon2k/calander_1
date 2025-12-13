@@ -1,0 +1,201 @@
+/* ===== DeptSchedule UI (카드 + 폼 + 테이블) ===== */
+
+/* 폼 */
+.dept-form-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.dept-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+/* 테이블 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.row-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.btn.danger {
+  border-color: rgba(255, 80, 80, 0.35);
+  color: rgba(255, 80, 80, 0.95);
+}
+
+/* 카드 제거 느낌(캘린더만) */
+.calendar-clean {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* ===== FullCalendar: 내 일정 스타일에 가깝게 ===== */
+.fc-clean .fc .fc-toolbar-title {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+
+/* 버튼 */
+.fc-clean .fc .fc-button {
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 800;
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .fc-clean .fc .fc-button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.fc-clean .fc .fc-button:hover {
+  filter: brightness(1.02);
+}
+
+.fc-clean .fc .fc-button:focus {
+  box-shadow: none;
+}
+
+/* 요일/날짜 텍스트 */
+.fc-clean .fc .fc-col-header-cell-cushion {
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.75);
+}
+html[data-theme="dark"] .fc-clean .fc .fc-col-header-cell-cushion {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.fc-clean .fc .fc-daygrid-day-number {
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.75);
+}
+html[data-theme="dark"] .fc-clean .fc .fc-daygrid-day-number {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 근접 월 날짜 흐리게 */
+.fc-clean .fc .fc-day-other .fc-daygrid-day-number {
+  color: rgba(0, 0, 0, 0.25);
+}
+html[data-theme="dark"] .fc-clean .fc .fc-day-other .fc-daygrid-day-number {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* 오늘 배경 */
+.fc-clean .fc .fc-daygrid-day.fc-day-today {
+  background: rgba(47, 109, 246, 0.1);
+}
+
+/* 관리자 폼 */
+.dept-admin {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var (--surface);
+}
+
+.dept-admin-title {
+  margin: 0 0 10px;
+  font-weight: 900;
+}
+
+.dept-admin-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+}
+
+@media (max-width: 820px) {
+  .page-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .dept-admin-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dept-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  min-width: 240px;
+  padding: 12px 44px 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--input-border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 52%,
+    calc(100% - 16px) 52%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.dept-select:hover {
+  filter: brightness(1.03);
+}
+
+.dept-select:focus {
+  outline: none;
+  border-color: rgba(47, 109, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(47, 109, 246, 0.18);
+}
+.page-wide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 학과 일정 캘린더 패널 */
+.page-wide .calendar-shell {
+  width: 100%;
+  max-width: 920px;     /* 🔥 내 일정 캘린더랑 동일 */
+  margin: 0 auto;       /* 🔥 중앙 정렬 핵심 */
+}

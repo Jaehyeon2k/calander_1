@@ -1,0 +1,89 @@
+/* FullCalendar Theme */
+.fc {
+  --fc-page-bg-color: var(--fc-page-bg);
+  --fc-border-color: var(--fc-border-color);
+  --fc-neutral-bg-color: var(--fc-neutral-bg);
+  --fc-today-bg-color: var(--fc-today-bg);
+  --fc-button-bg-color: var(--fc-button-bg);
+  --fc-button-text-color: var(--fc-button-text);
+  --fc-button-border-color: var(--fc-button-border);
+  --fc-event-bg-color: var(--event-bg);
+  --fc-event-border-color: var(--event-bg);
+  --fc-event-text-color: var(--event-text);
+
+  --fc-button-hover-bg-color: var(--fc-button-bg);
+  --fc-button-hover-border-color: var(--fc-button-border);
+  --fc-button-active-bg-color: var(--fc-button-bg);
+  --fc-button-active-border-color: var(--fc-button-border);
+}
+
+/* ✅ “칸” 제거(표 테두리 제거) */
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 0 !important;
+}
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section > td,
+.fc .fc-scrollgrid-section-header > td {
+  border: 0 !important;
+}
+
+/* 달력 바탕을 카드처럼 */
+.calendar-shell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* 요일 헤더 */
+.fc .fc-col-header-cell {
+  background: transparent;
+  font-weight: 800;
+}
+.fc .fc-col-header-cell-cushion {
+  color: var(--muted) !important;
+  padding: 10px 0;
+}
+
+/* 날짜 숫자 */
+.fc .fc-daygrid-day-number {
+  color: var(--muted) !important;
+  font-weight: 700;
+  padding: 8px;
+}
+
+/* 오늘 하이라이트 */
+.fc .fc-day-today {
+  background: var(--fc-today-bg) !important;
+  border-radius: 14px;
+}
+
+/* 이벤트 바(기본 스타일) */
+.fc .fc-daygrid-event {
+  border-radius: 10px !important;
+  padding: 3px 8px !important;
+  border: none !important;
+  font-weight: 700;
+}
+
+/* 헤더 버튼 */
+.fc .fc-button {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  font-weight: 800;
+  padding: 8px 14px !important;
+}
+
+/* 캘린더 타이틀 */
+.fc .fc-toolbar-title {
+  font-weight: 900;
+  letter-spacing: -0.2px;
+  color: var(--text) !important;
+}
+
+/* (선택) 월 뷰에서 “셀 배경”을 아주 약하게 */
+.fc .fc-daygrid-day-frame {
+  border-radius: 14px;
+}

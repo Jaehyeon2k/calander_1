@@ -1,0 +1,192 @@
+/* ===== /manage (EventsManage) UI only ===== */
+
+.manage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 18px 60px;
+}
+
+.manage-title {
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.manage-subtitle {
+  margin: 0 0 18px;
+  text-align: center;
+  opacity: 0.75;
+}
+
+.manage-error {
+  color: crimson;
+}
+
+/* 카드(패널) */
+.manage-card {
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.manage-card.pad-16 {
+  padding: 16px;
+}
+
+.manage-card-title {
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.manage-card-title.mb-12 {
+  margin-bottom: 12px;
+}
+
+/* 폼 */
+.manage-form-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 140px;
+  gap: 12px;
+  align-items: end;
+}
+
+.manage-field {
+  display: grid;
+  gap: 6px;
+}
+
+.manage-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.manage-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+}
+
+.manage-form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.manage-check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  user-select: none;
+}
+
+.manage-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  cursor: pointer;
+}
+
+.manage-btn-sm {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  cursor: pointer;
+}
+
+.manage-cancel-row {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 테이블 */
+.manage-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manage-thead-row {
+  text-align: left;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.manage-th,
+.manage-td {
+  padding: 10px 8px;
+}
+
+.manage-row {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.manage-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.manage-empty {
+  padding: 14px 8px;
+  opacity: 0.7;
+}
+
+/* 모달 */
+.manage-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+
+.manage-modal {
+  width: 420px;
+  max-width: 100%;
+  background: rgba(0,0,0,0.3);
+  border-radius: 14px;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 16px;
+}
+
+.manage-modal-title {
+  font-weight: 900;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.manage-color-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.manage-color-btn {
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  color: #111827;
+  font-weight: 800;
+}
+
+.manage-textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  resize: vertical;
+  background: #ffffff;
+}
+
+.manage-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}

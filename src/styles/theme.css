@@ -1,0 +1,62 @@
+/* Theme Variables */
+:root {
+  --bg: #0b0c10;
+  --surface: #11131a;
+  --surface-2: #171a22;
+  --text: #e9eef4;
+  --muted: rgba(233, 238, 244, 0.72);
+  --border: rgba(233, 238, 244, 0.1);
+
+  --primary: #2f6df6;
+  --primary-2: #1d4ed8;
+
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.14);
+
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  --radius: 16px;
+
+  /* FullCalendar bridge */
+  --fc-page-bg: var(--bg);
+  --fc-bg: var(--surface);
+  --fc-neutral-bg: rgba(255, 255, 255, 0.05);
+  --fc-border-color: transparent; /* ✅ 격자선 제거 핵심 */
+  --fc-today-bg: rgba(124, 196, 255, 0.12);
+
+  --fc-button-bg: rgba(255, 255, 255, 0.06);
+  --fc-button-text: var(--text);
+  --fc-button-border: rgba(255, 255, 255, 0.14);
+
+  --event-bg: #3a86ff;
+  --event-text: #ffffff;
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f1f4fb;
+  --text: #121521;
+  --muted: rgba(18, 21, 33, 0.62);
+  --border: rgba(18, 21, 33, 0.1);
+
+  --primary: #2f6df6;
+  --primary-2: #1d4ed8;
+
+  --input-bg: #f4f6fb;
+  --input-border: rgba(18, 21, 33, 0.14);
+
+  --shadow: 0 18px 45px rgba(18, 21, 33, 0.12);
+
+  --fc-page-bg: var(--bg);
+  --fc-bg: var(--surface);
+  --fc-neutral-bg: rgba(18, 21, 33, 0.05);
+  --fc-border-color: transparent; /* ✅ 라이트도 격자선 제거 */
+  --fc-today-bg: rgba(80, 145, 245, 0.12);
+
+  --fc-button-bg: #ffffff;
+  --fc-button-text: var(--text);
+  --fc-button-border: rgba(18, 21, 33, 0.16);
+
+  --event-bg: #2f6df6;
+  --event-text: #ffffff;
+}

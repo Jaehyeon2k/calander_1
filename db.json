@@ -133,28 +133,111 @@
       "id": 14
     },
     {
-      "title": "ㅁㄴㅇㄹ",
+      "title": "123",
+      "start": "2025-12-13",
+      "end": "",
+      "allDay": true,
+      "scope": "USER",
+      "ownerEmail": "root@gmail.com",
+      "memo": "",
+      "color": "blue",
+      "id": 104
+    },
+    {
+      "id": 1001,
+      "title": "2학기 기말 프로젝트 발표",
+      "start": "2025-12-16",
+      "end": "2025-12-19",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "CS",
+      "memo": "",
+      "color": "blue",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 2001,
+      "title": "드론 비행 실습 평가",
+      "start": "2025-12-09",
+      "end": "",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "AR",
+      "memo": "",
+      "color": "green",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 2002,
+      "title": "항공안전 이론 시험",
+      "start": "2025-12-16",
+      "end": "",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "AR",
+      "memo": "",
+      "color": "green",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 3001,
+      "title": "동물간호 실습 평가",
+      "start": "2025-12-11",
+      "end": "",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "AN",
+      "memo": "",
+      "color": "red",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 3002,
+      "title": "반려동물 임상 세미나",
+      "start": "2025-12-19",
+      "end": "",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "AN",
+      "memo": "",
+      "color": "red",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 4001,
+      "title": "졸업전시회 준비",
+      "start": "2025-12-02",
+      "end": "2025-12-06",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "DESIGN",
+      "memo": "",
+      "color": "purple",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 4002,
+      "title": "졸업전시회",
+      "start": "2025-12-15",
+      "end": "2025-12-20",
+      "allDay": true,
+      "scope": "DEPT",
+      "deptId": "DESIGN",
+      "memo": "",
+      "color": "purple",
+      "ownerEmail": "admin@yju.ac.kr"
+    },
+    {
+      "id": 5001,
+      "title": "계열 공통 특강",
       "start": "2025-12-13",
       "end": "",
       "allDay": true,
       "scope": "DEPT",
-      "deptId": "CS",
+      "deptId": "ETC",
       "memo": "",
-      "color": "blue",
-      "ownerEmail": "wmspfl2673@gmail.com",
-      "id": 102
-    },
-    {
-      "title": "테스트",
-      "start": "2025-12-13",
-      "end": "2025-12-25",
-      "allDay": true,
-      "scope": "DEPT",
-      "deptId": "CS",
-      "memo": "",
-      "color": "blue",
-      "ownerEmail": "wmspfl2673@gmail.com",
-      "id": 103
+      "color": "orange",
+      "ownerEmail": "admin@yju.ac.kr"
     }
   ]
 }

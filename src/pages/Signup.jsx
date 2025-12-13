@@ -42,14 +42,17 @@ export default function Signup() {
         <form onSubmit={onSignup}>
           <div className="form-row">
             <label className="form-label">이름(표시명)</label>
+            <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
 
           <div className="form-row">
             <label className="form-label">이메일</label>
+            <input className="input" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <div className="form-row">
             <label className="form-label">비밀번호</label>
+            <input className="input" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
 
           {msg && <p className="form-msg error">{msg}</p>}

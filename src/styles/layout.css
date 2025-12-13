@@ -1,0 +1,47 @@
+/* Layout helpers */
+.page-root {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 16px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin: 0 0 8px;
+  letter-spacing: -0.2px;
+}
+
+.page-subtitle {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+/* ✅ 로그인/회원가입/관리 페이지용 중앙 정렬 래퍼 */
+.center-wrap {
+  min-height: calc(100vh - 90px);
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+/* (Optional) Make nav look ok if you have one */
+nav {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  color: var(--text);
+}
+
+/* DeptSchedule layout */
+.page-wide {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 14px 60px;
+}

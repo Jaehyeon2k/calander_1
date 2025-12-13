@@ -1,0 +1,26 @@
+.school-filterbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 2px 14px;
+  justify-content: flex-start;
+}
+
+.school-filterbtn {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.school-filterbtn:hover {
+  filter: brightness(1.05);
+}
+
+.school-filterbtn.is-active {
+  border-color: rgba(47, 109, 246, 0.55);
+  background: rgba(47, 109, 246, 0.16);
+}

@@ -198,9 +198,7 @@ export default function EventsManage() {
       const updated = await updateEvent(memoModal.id, patch);
 
       setEvents((prev) =>
-        prev.map((x) =>
-          String(x.id) === String(memoModal.id) ? updated : x
-        )
+        prev.map((x) => (String(x.id) === String(memoModal.id) ? updated : x))
       );
 
       setMemoModal(null);
@@ -211,24 +209,18 @@ export default function EventsManage() {
   };
 
   return (
-    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "18px 18px 60px" }}>
-      <h2 style={{ margin: "0 0 6px", textAlign: "center" }}>내 일정 관리</h2>
-      <p style={{ margin: "0 0 18px", textAlign: "center", opacity: 0.75 }}>
+    <div className="manage">
+      <h2 className="manage-title">내 일정 관리</h2>
+      <p className="manage-subtitle">
         로그인한 사용자 기준으로, 나만의 개인 일정을 등록·수정·삭제할 수 있습니다.
       </p>
 
       {loading && <p>불러오는 중…</p>}
-      {errMsg && <p style={{ color: "crimson" }}>{errMsg}</p>}
+      {errMsg && <p className="manage-error">{errMsg}</p>}
 
-      <div
-        style={{
-          border: "1px solid #e6e6e6",
-          borderRadius: 14,
-          padding: 14,
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ fontWeight: 800, margin: "0 0 8px" }}>내 일정 캘린더</div>
+      {/* 캘린더 */}
+      <div className="manage-card">
+        <div className="manage-card-title">내 일정 캘린더</div>
 
         <FullCalendar
           plugins={[dayGridPlugin]}
@@ -248,85 +240,45 @@ export default function EventsManage() {
         />
       </div>
 
-      <div
-        style={{
-          border: "1px solid #e6e6e6",
-          borderRadius: 14,
-          padding: 16,
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ fontWeight: 800, marginBottom: 12 }}>새 일정 추가</div>
+      {/* 새 일정 추가 */}
+      <div className="manage-card pad-16">
+        <div className="manage-card-title mb-12">새 일정 추가</div>
 
         <form onSubmit={onSubmit}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1.6fr 1fr 1fr 140px",
-              gap: 12,
-              alignItems: "end",
-            }}
-          >
-            <div style={{ display: "grid", gap: 6 }}>
-              <label style={{ fontSize: 13, opacity: 0.8 }}>제목</label>
+          <div className="manage-form-grid">
+            <div className="manage-field">
+              <label className="manage-label">제목</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="예) 팀플 발표, 과제 마감"
-                style={{
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d9d9d9",
-                }}
+                className="manage-input"
               />
             </div>
 
-            <div style={{ display: "grid", gap: 6 }}>
-              <label style={{ fontSize: 13, opacity: 0.8 }}>시작</label>
+            <div className="manage-field">
+              <label className="manage-label">시작</label>
               <input
                 type="date"
                 value={start}
                 onChange={(e) => setStart(e.target.value)}
-                style={{
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d9d9d9",
-                }}
+                className="manage-input"
               />
             </div>
 
-            <div style={{ display: "grid", gap: 6 }}>
-              <label style={{ fontSize: 13, opacity: 0.8 }}>끝(선택)</label>
+            <div className="manage-field">
+              <label className="manage-label">끝(선택)</label>
               <input
                 type="date"
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}
-                disabled={false}
-                style={{
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d9d9d9",
-                }}
+                className="manage-input"
               />
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: 12,
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <label
-                style={{
-                  display: "flex",
-                  gap: 8,
-                  alignItems: "center",
-                  userSelect: "none",
-                }}
-              >
+            <div className="manage-form-actions">
+              <label className="manage-check">
                 <input
                   type="checkbox"
                   checked={allDay}
@@ -335,38 +287,15 @@ export default function EventsManage() {
                 종일
               </label>
 
-              <button
-                type="submit"
-                style={{
-                  padding: "10px 18px",
-                  borderRadius: 12,
-                  border: "1px solid #d9d9d9",
-                  cursor: "pointer",
-                }}
-              >
+              <button type="submit" className="manage-btn">
                 {editId ? "저장" : "추가"}
               </button>
             </div>
           </div>
 
           {editId && (
-            <div
-              style={{
-                marginTop: 10,
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <button
-                type="button"
-                onClick={resetForm}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d9d9d9",
-                  cursor: "pointer",
-                }}
-              >
+            <div className="manage-cancel-row">
+              <button type="button" onClick={resetForm} className="manage-btn">
                 수정 취소
               </button>
             </div>
@@ -374,45 +303,37 @@ export default function EventsManage() {
         </form>
       </div>
 
-      <div style={{ border: "1px solid #e6e6e6", borderRadius: 14, padding: 16 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      {/* 테이블 */}
+      <div className="manage-card pad-16">
+        <table className="manage-table">
           <thead>
-            <tr style={{ textAlign: "left", borderBottom: "1px solid #e6e6e6" }}>
-              <th style={{ padding: "10px 8px" }}>제목</th>
-              <th style={{ padding: "10px 8px", width: 140 }}>시작</th>
-              <th style={{ padding: "10px 8px", width: 140 }}>끝</th>
-              <th style={{ padding: "10px 8px", width: 160 }}>관리</th>
+            <tr className="manage-thead-row">
+              <th className="manage-th">제목</th>
+              <th className="manage-th" style={{ width: 140 }}>시작</th>
+              <th className="manage-th" style={{ width: 140 }}>끝</th>
+              <th className="manage-th" style={{ width: 160 }}>관리</th>
             </tr>
           </thead>
+
           <tbody>
             {myEvents.map((row) => (
-              <tr key={row.id} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                <td style={{ padding: "10px 8px" }}>{row.title}</td>
-                <td style={{ padding: "10px 8px" }}>{toDateInputValue(row.start)}</td>
-                <td style={{ padding: "10px 8px" }}>{toDateInputValue(row.end)}</td>
-                <td style={{ padding: "10px 8px" }}>
-                  <div style={{ display: "flex", gap: 8 }}>
+              <tr key={row.id} className="manage-row">
+                <td className="manage-td">{row.title}</td>
+                <td className="manage-td">{toDateInputValue(row.start)}</td>
+                <td className="manage-td">{toDateInputValue(row.end)}</td>
+                <td className="manage-td">
+                  <div className="manage-actions">
                     <button
                       type="button"
                       onClick={() => onEdit(row)}
-                      style={{
-                        padding: "6px 10px",
-                        borderRadius: 10,
-                        border: "1px solid #d9d9d9",
-                        cursor: "pointer",
-                      }}
+                      className="manage-btn-sm"
                     >
                       수정
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(row.id)}
-                      style={{
-                        padding: "6px 10px",
-                        borderRadius: 10,
-                        border: "1px solid #d9d9d9",
-                        cursor: "pointer",
-                      }}
+                      className="manage-btn-sm"
                     >
                       삭제
                     </button>
@@ -423,64 +344,44 @@ export default function EventsManage() {
 
             {myEvents.length === 0 && (
               <tr>
-                <td colSpan={4} style={{ padding: "14px 8px", opacity: 0.7 }}>
+                <td colSpan={4} className="manage-empty">
                   등록된 개인 일정이 없습니다
                 </td>
               </tr>
             )}
           </tbody>
-        </table> 
+        </table>
       </div>
 
+      {/* 메모 모달 */}
       {memoModal && (
         <div
+          className="manage-modal-overlay"
           onClick={() => setMemoModal(null)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 2000,
-            padding: 16,
-          }}
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: 420,
-              maxWidth: "100%",
-              background: "rgba(0,0,0,0.3)",
-              borderRadius: 14,
-              border: "1px solid #e6e6e6",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-              padding: 16,
-            }}
-          >
-            <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 10 }}>
-              {memoModal.title}
-            </div>
+          <div className="manage-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="manage-modal-title">{memoModal.title}</div>
 
-            <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+            <div className="manage-color-row">
               {COLOR_OPTIONS.map((opt) => {
                 const active = memoModal.color === opt.key;
+
+                // ✅ 색상은 동적이라 최소한의 스타일만 유지
+                const style = {
+                  border: active ? `2px solid ${opt.border}` : "1px solid #d9d9d9",
+                  background: active ? opt.bg : "#ffffff",
+                  color: active ? opt.text : "#111827",
+                };
+
                 return (
                   <button
                     key={opt.key}
                     type="button"
+                    className="manage-color-btn"
+                    style={style}
                     onClick={() =>
                       setMemoModal((prev) => ({ ...prev, color: opt.key }))
                     }
-                    style={{
-                      padding: "8px 10px",
-                      borderRadius: 10,
-                      cursor: "pointer",
-                      border: active ? `2px solid ${opt.border}` : "1px solid #d9d9d9",
-                      background: active ? opt.bg : "#ffffff",
-                      color: active ? opt.text : "#111827",
-                      fontWeight: 800,
-                    }}
                   >
                     {opt.label}
                   </button>
@@ -488,7 +389,7 @@ export default function EventsManage() {
               })}
             </div>
 
-            <label style={{ fontSize: 13, opacity: 0.8 }}>메모</label>
+            <label className="manage-label">메모</label>
             <textarea
               value={memoModal.memo}
               onChange={(e) =>
@@ -496,46 +397,22 @@ export default function EventsManage() {
               }
               placeholder="여기에 메모를 남기세요"
               rows={6}
-              style={{
-                width: "100%",
-                marginTop: 6,
-                padding: "10px 12px",
-                borderRadius: 12,
-                border: "1px solid #d9d9d9",
-                resize: "vertical",
-                background: "#ffffff",
-              }}
+              className="manage-textarea"
             />
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                marginTop: 14,
-              }}
-            >
+            <div className="manage-modal-actions">
               <button
                 type="button"
+                className="manage-btn"
                 onClick={() => setMemoModal(null)}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d9d9d9",
-                  cursor: "pointer",
-                }}
               >
                 닫기
               </button>
+
               <button
                 type="button"
+                className="manage-btn"
                 onClick={saveMemo}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d9d9d9",
-                  cursor: "pointer",
-                }}
               >
                 메모 저장
               </button>
