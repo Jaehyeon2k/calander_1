@@ -1,17 +1,6 @@
 {
   "events": [
     {
-      "id": 101,
-      "title": "컴정 중간고사",
-      "start": "2025-10-21",
-      "end": "",
-      "allDay": true,
-      "scope": "DEPT",
-      "deptId": "CS",
-      "memo": "",
-      "color": "blue"
-    },
-    {
       "title": "123",
       "start": "2025-12-13",
       "end": "",
@@ -67,17 +56,6 @@
       "id": 8
     },
     {
-      "title": "123",
-      "start": "2025-12-13",
-      "end": "",
-      "allDay": false,
-      "scope": "USER",
-      "ownerEmail": "test8@gmail.com",
-      "memo": "",
-      "color": "blue",
-      "id": 9
-    },
-    {
       "title": "324123",
       "start": "2025-12-30",
       "end": "2026-01-02",
@@ -98,28 +76,6 @@
       "memo": "",
       "color": "red",
       "id": 11
-    },
-    {
-      "title": "12323",
-      "start": "2025-12-12",
-      "end": "",
-      "allDay": false,
-      "scope": "USER",
-      "ownerEmail": "test8@gmail.com",
-      "memo": "",
-      "color": "blue",
-      "id": 12
-    },
-    {
-      "title": "124123",
-      "start": "2025-12-12",
-      "end": "",
-      "allDay": false,
-      "scope": "USER",
-      "ownerEmail": "test8@gmail.com",
-      "memo": "",
-      "color": "blue",
-      "id": 13
     },
     {
       "title": "123123214213",

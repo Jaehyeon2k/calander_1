@@ -272,41 +272,52 @@
   .dept-select{ width: 100%; }
   .fc-clean{ padding: 10px; }
 }
-/* ✅ fc-clean 라이트/다크 공통 (하드코딩 흰색 제거) */
-.fc-clean .fc .fc-button{
-  border-radius: 12px !important;
-  border: 1px solid var(--fc-button-border) !important;
-  background: var(--fc-button-bg) !important;
-  color: var(--fc-button-text) !important;
-  font-weight: 900 !important;
-  box-shadow: none !important;
-  padding: 8px 14px !important;
-}
-
-.fc-clean .fc .fc-col-header-cell-cushion{
-  font-weight: 900;
-  color: var(--muted) !important;
-}
-.fc-clean .fc .fc-daygrid-day-number{
-  font-weight: 900;
-  color: var(--muted) !important;
-}
-.fc-clean .fc .fc-day-other .fc-daygrid-day-number{
-  opacity: .35;
-}
-
-.fc-clean .fc .fc-daygrid-day.fc-day-today{
-  background: var(--fc-today-bg) !important;
-  border-radius: 14px;
-}
-.dept-select{
-  background: var(--input-bg);
+/* ✅ 다크모드에서 select 옵션 드롭다운 하얗게 뜨는 거 방지 */
+.dept-select {
+  background-color: var(--surface);   /* 기존 rgba 대신 표면색으로 */
   color: var(--text);
-  border: 1px solid var(--input-border);
+  color-scheme: light dark;            /* 일부 브라우저에서 옵션 테마 힌트 */
 }
 
-/* 옵션은 브라우저가 무시할 수도 있지만, 되는 환경에서는 적용됨 */
-.dept-select option{
+.dept-select option {
   background: var(--surface);
   color: var(--text);
+}
+.dept-page.is-user .table th,
+.dept-page.is-user .table td{
+  border-bottom: 0 !important;
+}/* ✅ 테이블 선 제거 + 패딩으로 가독성 확보 */
+.dept-page .table{
+  border-collapse: separate;
+  border-spacing: 0 10px; /* 행 사이 간격 */
+}
+
+.dept-page .table th,
+.dept-page .table td{
+  border-bottom: 0 !important;   /* 선 제거 */
+  padding: 14px 16px;            /* 패딩 업 */
+}
+
+/* 행을 카드처럼 보이게(선 없이 구분) */
+.dept-page .table tbody tr td{
+  background: rgba(255,255,255,.04);
+}
+
+.dept-page .table tbody tr td:first-child{
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.dept-page .table tbody tr td:last-child{
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.dept-page .table tbody tr:hover td{
+  background: rgba(255,255,255,.07);
+}
+.dept-page .manage-panel + .card{
+  margin-top: 18px;
+}/* ✅ 관리자일 때: 새 일정 추가 카드 아래 리스트에 여백 */
+.dept-page.is-admin .card + .card {
+  margin-top: 28px;
 }

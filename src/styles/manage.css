@@ -147,3 +147,140 @@
   background: var(--fc-today-bg) !important;
   border-radius: 14px;
 }
+/* =========================
+   EventsManage - Memo Modal
+   (기존 page-wide / manage-panel 스타일은 유지)
+========================= */
+
+.manage-hint{
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: .75;
+}
+
+.title-cell .title-line{
+  font-weight: 700;
+}
+.memo-preview{
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: .72;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 520px;
+}
+
+/* 중요도 뱃지 */
+.importance-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-weight: 900;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* ===== 모달 ===== */
+.memo-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 16px;
+}
+
+.memo-modal{
+  width: 460px;
+  max-width: 100%;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.memo-title{
+  font-weight: 900;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.memo-colors{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.color-pill{
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 12px;
+  background: transparent;
+}
+
+.memo-label{
+  font-size: 13px;
+  opacity: .8;
+}
+
+.memo-textarea{
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  resize: vertical;
+  outline: none;
+}
+
+.memo-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 모바일에서 테이블 메모 미리보기 너무 길면 줄이기 */
+@media (max-width: 640px){
+  .memo-preview{ max-width: 240px; }
+}
+/* 관리 버튼 가로 정렬 */
+.row-actions{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  flex-wrap: nowrap;     /* ✅ 줄바꿈 금지 */
+  white-space: nowrap;   /* ✅ 텍스트도 줄바꿈 금지 */
+}
+
+/* 버튼이 좁아도 찌그러지지 않게 */
+.row-actions .btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;        /* ✅ 줄어들면서 세로로 내려가는거 방지 */
+  min-width: 56px;       /* 필요하면 50~70 조절 */
+  padding: 6px 10px;     /* 너 버튼 스타일에 맞춰 조절 */
+}
+
+/* 삭제 버튼도 동일 쇼트하게 */
+.row-actions .btn.danger{
+  min-width: 56px;
+}

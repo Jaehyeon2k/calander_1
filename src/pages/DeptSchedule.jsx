@@ -156,7 +156,11 @@ export default function DeptSchedule() {
   };
 
   return (
-    <div className="page-root page-wide">
+    <div
+      className={`page-root page-wide dept-page ${
+        admin ? "is-admin" : "is-user"
+      }`}
+    >
       <div className="page-head">
         <div>
           <h2 className="page-title-lg">학과 일정</h2>
@@ -185,9 +189,8 @@ export default function DeptSchedule() {
       </div>
 
       {msg && <p className="form-msg error">{msg}</p>}
-    <div className="manage-panel">
-      <div className="manage-panel-title">학과 일정 캘린더</div>
-
+      <div className="manage-panel">
+        <div className="manage-panel-title">학과 일정 캘린더</div>
 
         <FullCalendar
           plugins={[dayGridPlugin]}
@@ -209,7 +212,6 @@ export default function DeptSchedule() {
           // ✅ eventClick 없음 = 클릭해도 삭제 안됨
         />
       </div>
-      <div className="section-divider" />
 
       {/* ✅ 관리자만: 등록/수정 폼 (스샷처럼) */}
       {admin && (
@@ -274,7 +276,6 @@ export default function DeptSchedule() {
           </form>
         </div>
       )}
-      <div className="section-divider" />
 
       {/* ✅ 리스트(표): 선택한 학과 일정들이 밑에 쭉 뜸 */}
       <div className="card">
@@ -284,7 +285,7 @@ export default function DeptSchedule() {
               <th>제목</th>
               <th style={{ width: 140 }}>시작</th>
               <th style={{ width: 140 }}>끝</th>
-              <th style={{ width: 170 }}>관리</th>
+              {admin && <th style={{ width: 170 }}>관리</th>}
             </tr>
           </thead>
 
@@ -294,8 +295,9 @@ export default function DeptSchedule() {
                 <td>{row.title}</td>
                 <td>{toYmd(row.start)}</td>
                 <td>{toYmd(row.end)}</td>
-                <td>
-                  {admin ? (
+
+                {admin && (
+                  <td>
                     <div className="row-actions">
                       <button
                         className="btn"
@@ -312,16 +314,18 @@ export default function DeptSchedule() {
                         삭제
                       </button>
                     </div>
-                  ) : (
-                    <span className="muted">-</span>
-                  )}
-                </td>
+                  </td>
+                )}
               </tr>
             ))}
 
             {deptEvents.length === 0 && (
               <tr>
-                <td colSpan={4} className="muted" style={{ padding: 14 }}>
+                <td
+                  colSpan={admin ? 4 : 3}
+                  className="muted"
+                  style={{ padding: 14 }}
+                >
                   등록된 학과 일정이 없습니다.
                 </td>
               </tr>
