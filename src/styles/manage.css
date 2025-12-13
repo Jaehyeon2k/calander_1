@@ -1,192 +1,149 @@
-/* ===== /manage (EventsManage) UI only ===== */
-
-.manage {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 18px 18px 60px;
+/* 공통 섹션 */
+.section-divider {
+  margin: 28px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
 }
 
-.manage-title {
-  margin: 0 0 6px;
-  text-align: center;
-}
-
-.manage-subtitle {
-  margin: 0 0 18px;
-  text-align: center;
-  opacity: 0.75;
-}
-
-.manage-error {
-  color: crimson;
-}
-
-/* 카드(패널) */
-.manage-card {
-  border: 1px solid #e6e6e6;
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 16px;
-}
-
-.manage-card.pad-16 {
-  padding: 16px;
-}
-
-.manage-card-title {
-  font-weight: 800;
-  margin: 0 0 8px;
-}
-
-.manage-card-title.mb-12 {
+.section-title {
+  font-weight: 900;
   margin-bottom: 12px;
+}
+
+/* manage / dept 공통 패널 */
+.manage-panel {
+  margin-top: 14px;
+}
+
+.manage-panel-title {
+  font-weight: 900;
+  margin-bottom: 10px;
 }
 
 /* 폼 */
 .manage-form-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 140px;
+  grid-template-columns: 1.6fr 1fr 1fr auto auto;
   gap: 12px;
-  align-items: end;
-}
-
-.manage-field {
-  display: grid;
-  gap: 6px;
-}
-
-.manage-label {
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-.manage-input {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #d9d9d9;
-}
-
-.manage-form-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
   align-items: center;
 }
 
-.manage-check {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  user-select: none;
+@media (max-width: 900px) {
+  .manage-form-grid {
+    grid-template-columns: 1fr;
+  }
 }
+/* ===== manage table = dept table ===== */
 
-.manage-btn {
-  padding: 10px 18px;
-  border-radius: 12px;
-  border: 1px solid #d9d9d9;
-  cursor: pointer;
-}
-
-.manage-btn-sm {
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 1px solid #d9d9d9;
-  cursor: pointer;
-}
-
-.manage-cancel-row {
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* 테이블 */
-.manage-table {
+.manage-table-wide {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.manage-thead-row {
+.manage-table-wide th,
+.manage-table-wide td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   text-align: left;
-  border-bottom: 1px solid #e6e6e6;
+  vertical-align: middle;
 }
 
-.manage-th,
-.manage-td {
-  padding: 10px 8px;
-}
-
-.manage-row {
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.manage-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.manage-empty {
-  padding: 14px 8px;
-  opacity: 0.7;
-}
-
-/* 모달 */
-.manage-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 16px;
-}
-
-.manage-modal {
-  width: 420px;
-  max-width: 100%;
-  background: rgba(0,0,0,0.3);
-  border-radius: 14px;
-  border: 1px solid #e6e6e6;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  padding: 16px;
-}
-
-.manage-modal-title {
+.manage-table-wide th {
   font-weight: 900;
-  font-size: 18px;
-  margin-bottom: 10px;
+  opacity: 0.9;
 }
 
-.manage-color-row {
+/* 제목 길어도 깨지지 않게 */
+.manage-table-wide td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 관리 버튼 영역 */
+.row-actions {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.manage-color-btn {
-  padding: 8px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: 1px solid #d9d9d9;
-  background: #ffffff;
-  color: #111827;
-  font-weight: 800;
-}
-
-.manage-textarea {
-  width: 100%;
-  margin-top: 6px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid #d9d9d9;
-  resize: vertical;
-  background: #ffffff;
-}
-
-.manage-modal-actions {
-  display: flex;
-  justify-content: flex-end;
   gap: 10px;
-  margin-top: 14px;
+}
+
+.row-actions .btn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.row-actions .btn.danger {
+  border-color: rgba(255,80,80,.4);
+  color: rgba(255,80,80,.95);
+}
+/* =========================
+   Manage Page – Card Style
+   (내 일정 관리 화면 전용)
+========================= */
+
+/* 새 일정 추가 카드 */
+.manage-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+/* 입력폼 한 줄 정렬 (오른쪽 스샷 스타일) */
+.manage-form-grid {
+  grid-template-columns: 2fr 1fr 1fr auto auto;
+}
+
+/* 일정 목록 카드 */
+.manage-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+/* 제목 컬럼 줄바꿈 허용 (왼쪽 스샷 문제 해결 핵심) */
+.manage-table-wide td:first-child {
+  white-space: normal;
+  word-break: keep-all;
+}
+
+/* 모바일 대응 */
+@media (max-width: 900px) {
+  .manage-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ✅ fc-clean 라이트/다크 공통 (하드코딩 흰색 제거) */
+.fc-clean .fc .fc-button{
+  border-radius: 12px !important;
+  border: 1px solid var(--fc-button-border) !important;
+  background: var(--fc-button-bg) !important;
+  color: var(--fc-button-text) !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+  padding: 8px 14px !important;
+}
+
+.fc-clean .fc .fc-col-header-cell-cushion{
+  font-weight: 900;
+  color: var(--muted) !important;
+}
+.fc-clean .fc .fc-daygrid-day-number{
+  font-weight: 900;
+  color: var(--muted) !important;
+}
+.fc-clean .fc .fc-day-other .fc-daygrid-day-number{
+  opacity: .35;
+}
+
+.fc-clean .fc .fc-daygrid-day.fc-day-today{
+  background: var(--fc-today-bg) !important;
+  border-radius: 14px;
 }

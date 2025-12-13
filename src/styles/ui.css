@@ -1,6 +1,5 @@
 /* Card / Form UI */
 .card {
-  width: min(560px, 92vw);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);

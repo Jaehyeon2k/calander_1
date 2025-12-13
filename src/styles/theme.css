@@ -60,3 +60,6 @@
   --event-bg: #2f6df6;
   --event-text: #ffffff;
 }
+/* 다크/라이트에서 네이티브 폼 UI도 테마 따라가게 */
+:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }

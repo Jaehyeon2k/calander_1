@@ -185,10 +185,9 @@ export default function DeptSchedule() {
       </div>
 
       {msg && <p className="form-msg error">{msg}</p>}
+    <div className="manage-panel">
+      <div className="manage-panel-title">학과 일정 캘린더</div>
 
-      {/* ✅ 캘린더: 클릭 삭제 기능 제거(중요) */}
-      <div className="card">
-        <div className="card-title">학과 일정 캘린더</div>
 
         <FullCalendar
           plugins={[dayGridPlugin]}
@@ -210,6 +209,7 @@ export default function DeptSchedule() {
           // ✅ eventClick 없음 = 클릭해도 삭제 안됨
         />
       </div>
+      <div className="section-divider" />
 
       {/* ✅ 관리자만: 등록/수정 폼 (스샷처럼) */}
       {admin && (
@@ -274,6 +274,7 @@ export default function DeptSchedule() {
           </form>
         </div>
       )}
+      <div className="section-divider" />
 
       {/* ✅ 리스트(표): 선택한 학과 일정들이 밑에 쭉 뜸 */}
       <div className="card">
