@@ -149,7 +149,6 @@
   text-overflow: ellipsis !important;
   display: -webkit-box !important;
   -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: 2 !important;
   word-break: keep-all;
 }
 .fc-clean .fc .fc-daygrid-event-harness{
