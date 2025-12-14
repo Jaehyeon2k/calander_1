@@ -40,11 +40,11 @@ function NavBar() {
       <Link to="/calendar" style={linkStyle}>
         학사일정
       </Link>
-      <Link to="/manage" style={linkStyle}>
-        내 일정 관리
-      </Link>
       <Link to="/dept" style={linkStyle}>
-        학과 일정
+        학과일정
+      </Link>
+      <Link to="/manage" style={linkStyle}>
+        내 일정
       </Link>
       <Link to="/timetable" style={linkStyle}>
         시간표

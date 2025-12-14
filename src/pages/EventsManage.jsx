@@ -1,6 +1,9 @@
-// src/pages/EventsManage.jsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+
 import { useAuth } from "../auth/AuthContext";
+import CalendarFrame from "../components/CalendarFrame";
+import MonthCalendar from "../components/MonthCalendar";
+
 import {
   fetchEvents,
   createEvent,
@@ -8,10 +11,9 @@ import {
   deleteEvent,
 } from "../api/eventsApi";
 
-import CalendarFrame from "../components/CalendarFrame";
-import MonthCalendar from "../components/MonthCalendar";
-import EventTable from "../components/EventTable";
-import FormGrid from "../components/FormGrid";
+import ScheduleFormCard from "../components/ScheduleFormCard";
+import MyEventsTable from "../components/MyEventsTable";
+import MemoModal from "../components/MemoModal";
 
 function toDateInputValue(d) {
   if (!d) return "";
@@ -22,193 +24,192 @@ function toDateInputValue(d) {
   return `${y}-${m}-${day}`;
 }
 
+// ✅ 색상 옵션(저장값: red/blue/green)
 const COLOR_OPTIONS = [
-  {
-    key: "red",
-    label: "높음",
-    bg: "#ef4444",
-    border: "#dc2626",
-    text: "#ffffff",
-  },
-  {
-    key: "blue",
-    label: "보통",
-    bg: "#3b82f6",
-    border: "#2563eb",
-    text: "#ffffff",
-  },
-  {
-    key: "green",
-    label: "낮음",
-    bg: "#22c55e",
-    border: "#16a34a",
-    text: "#ffffff",
-  },
+  { key: "red",   label: "중요", bg: "#ef4444", border: "#dc2626", text: "#ffffff" },
+  { key: "blue",  label: "보통", bg: "#3b82f6", border: "#2563eb", text: "#ffffff" },
+  { key: "green", label: "낮음", bg: "#22c55e", border: "#16a34a", text: "#ffffff" },
 ];
 
-function getColorStyle(colorKey) {
-  return COLOR_OPTIONS.find((x) => x.key === colorKey) || COLOR_OPTIONS[1];
+function getColorStyle(key) {
+  return COLOR_OPTIONS.find((x) => x.key === key) || COLOR_OPTIONS[1];
 }
 
 export default function EventsManage() {
   const { user } = useAuth();
+  const email = user?.email || "";
 
-  const [events, setEvents] = useState([]);
+  const [myEvents, setMyEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
+  // form state
+  const [editId, setEditId] = useState(null);
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [editId, setEditId] = useState(null);
 
-  const [memoModal, setMemoModal] = useState(null); // { id, title, memo, color }
+  // memo modal state
+  const [memoModal, setMemoModal] = useState(null);
 
-  const myEvents = useMemo(() => {
-    const email = user?.email || user?.user?.email || "";
-    return events.filter((e) => {
-      const scope = e.scope || e.SCOPE;
-      const owner = e.ownerEmail || e.userEmail || e.email;
-      return scope === "USER" && owner === email;
-    });
-  }, [events, user]);
-
-  const fcEvents = useMemo(() => {
-    return myEvents.map((e) => {
-      const c = getColorStyle(e.color);
-      return {
-        id: String(e.id),
-        title: e.title,
-        start: e.start,
-        end: e.end || undefined,
-        extendedProps: { memo: e.memo || "", color: e.color || "blue" },
-        backgroundColor: c.bg,
-        borderColor: c.border,
-        textColor: c.text,
-      };
-    });
-  }, [myEvents]);
-
-  const load = async () => {
+  const loadMyEvents = useCallback(async () => {
+    if (!email) return;
     setLoading(true);
     setErrMsg("");
+
     try {
       const data = await fetchEvents();
-      setEvents(Array.isArray(data) ? data : []);
+
+      // ✅ 내 일정만 필터링
+      const onlyMine = (Array.isArray(data) ? data : []).filter(
+        (ev) => ev.scope === "USER" && ev.ownerEmail === email
+      );
+
+      setMyEvents(onlyMine);
     } catch (e) {
-      setErrMsg(e?.message || "불러오기 실패");
+      setErrMsg("개인 일정 로드 실패");
     } finally {
       setLoading(false);
     }
-  };
+  }, [email]);
 
   useEffect(() => {
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    loadMyEvents();
+  }, [loadMyEvents]);
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setEditId(null);
     setTitle("");
     setStart("");
     setEnd("");
-  };
+  }, []);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setErrMsg("");
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!email) return;
 
-    const email = user?.email || user?.user?.email || "";
-    if (!email) return setErrMsg("로그인이 필요합니다.");
+      const payload = {
+        title: String(title || "").trim(),
+        start: start || "",
+        end: end || "",
+        allDay: true,
+        scope: "USER",
+        ownerEmail: email,
+      };
 
-    if (!title.trim()) return setErrMsg("제목을 입력하세요.");
-    if (!start) return setErrMsg("시작 날짜를 선택하세요.");
-    if (end && end < start)
-      return setErrMsg("끝 날짜는 시작 날짜보다 빠를 수 없습니다.");
-
-    try {
-      if (editId) {
-        const updated = await updateEvent(editId, {
-          title: title.trim(),
-          start,
-          end: end || "",
-        });
-        setEvents((prev) =>
-          prev.map((x) => (String(x.id) === String(editId) ? updated : x))
-        );
-      } else {
-        const created = await createEvent({
-          title: title.trim(),
-          start,
-          end: end || "",
-          scope: "USER",
-          ownerEmail: email,
-          memo: "",
-          color: "blue",
-        });
-        setEvents((prev) => [created, ...prev]);
+      if (!payload.title || !payload.start) {
+        setErrMsg("제목/시작일은 필수입니다.");
+        return;
       }
-      resetForm();
-    } catch (e2) {
-      setErrMsg(e2?.message || (editId ? "수정 실패" : "등록 실패"));
-    }
-  };
 
-  const onEdit = (row) => {
+      setLoading(true);
+      setErrMsg("");
+      try {
+        if (editId) {
+          await updateEvent(editId, payload);
+        } else {
+          await createEvent(payload);
+        }
+        resetForm();
+        await loadMyEvents();
+      } catch (e2) {
+        setErrMsg(editId ? "수정 실패" : "추가 실패");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [email, title, start, end, editId, resetForm, loadMyEvents]
+  );
+
+  const onEdit = useCallback((row) => {
     setEditId(row.id);
     setTitle(row.title || "");
     setStart(toDateInputValue(row.start));
     setEnd(toDateInputValue(row.end));
-  };
+  }, []);
 
-  const onDelete = async (id) => {
-    const ok = window.confirm("이 일정을 삭제하시겠습니까?");
-    if (!ok) return;
+  const onDelete = useCallback(
+    async (id) => {
+      if (!id) return;
+      setLoading(true);
+      setErrMsg("");
+      try {
+        await deleteEvent(id);
+        await loadMyEvents();
+      } catch (e) {
+        setErrMsg("삭제 실패");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loadMyEvents]
+  );
 
-    setErrMsg("");
-    try {
-      await deleteEvent(id);
-      setEvents((prev) => prev.filter((x) => String(x.id) !== String(id)));
-      if (String(editId) === String(id)) resetForm();
-      if (memoModal && String(memoModal.id) === String(id)) setMemoModal(null);
-    } catch (e) {
-      setErrMsg(e?.message || "삭제 실패");
-    }
-  };
-
-  const onCalendarClick = (info) => {
-    const ev = info.event;
+  const onOpenMemo = useCallback((row) => {
     setMemoModal({
-      id: ev.id,
-      title: ev.title,
-      memo: ev.extendedProps?.memo || "",
-      color: ev.extendedProps?.color || "blue",
+      id: row.id,
+      title: row.title,
+      memo: row.memo || "",
+      color: row.color || "blue",
     });
-  };
+  }, []);
 
-  const saveMemo = async () => {
-    if (!memoModal) return;
+  const saveMemo = useCallback(async () => {
+    if (!memoModal?.id) return;
+
+    setLoading(true);
     setErrMsg("");
-
     try {
-      const patch = { memo: memoModal.memo, color: memoModal.color };
-      const updated = await updateEvent(memoModal.id, patch);
-      setEvents((prev) =>
-        prev.map((x) => (String(x.id) === String(memoModal.id) ? updated : x))
-      );
+      await updateEvent(memoModal.id, {
+        memo: memoModal.memo || "",
+        color: memoModal.color || "blue",
+      });
       setMemoModal(null);
+      await loadMyEvents();
     } catch (e) {
-      setErrMsg(e?.message || "메모 저장 실패");
+      setErrMsg("메모 저장 실패");
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [memoModal, loadMyEvents]);
 
+  // FullCalendar 이벤트 변환
+  const fcEvents = useMemo(() => {
+    return (myEvents || []).map((ev) => {
+      const c = getColorStyle(ev.color || "blue");
+      return {
+        id: ev.id,
+        title: ev.title,
+        start: ev.start,
+        end: ev.end || undefined,
+        allDay: true,
+        backgroundColor: c.bg,
+        borderColor: c.border,
+        textColor: c.text,
+        extendedProps: ev,
+      };
+    });
+  }, [myEvents]);
+
+  // 캘린더 클릭 → 메모 모달 열기
+  const onCalendarClick = useCallback(
+    (info) => {
+      const row = info?.event?.extendedProps;
+      if (!row?.id) return;
+      onOpenMemo(row);
+    },
+    [onOpenMemo]
+  );
+
+  // 테이블 columns (EventTable이 th만 쓰고 실제 row는 renderRow가 그려줌)
   const columns = useMemo(
     () => [
       { label: "제목" },
-      { label: "중요도", width: 130 },
-      { label: "시작", width: 140 },
-      { label: "끝", width: 140 },
-      { label: "관리", width: 190 },
+      { label: "중요도" },
+      { label: "시작" },
+      { label: "끝" },
+      { label: "", align: "right" },
     ],
     []
   );
@@ -216,112 +217,41 @@ export default function EventsManage() {
   return (
     <CalendarFrame
       title="내 일정 관리"
-      subtitle="로그인한 사용자 기준으로 개인 일정을 관리합니다."
       calendarTitle="내 일정 캘린더"
       bottom={
-        <div className="manage-stack">
+        <>
           {(loading || errMsg) && (
             <p className={`form-msg ${errMsg ? "error" : ""}`}>
               {loading ? "불러오는 중..." : errMsg}
             </p>
           )}
 
-          <div className="card">
-            <div className="card-title">
-              {editId ? "일정 수정" : "새 일정 추가"}
-            </div>
-
-            <FormGrid
-              titleValue={title}
-              onTitleChange={setTitle}
-              startValue={start}
-              onStartChange={setStart}
-              endValue={end}
-              onEndChange={setEnd}
-              primaryText={editId ? "저장" : "추가"}
-              showCancel={!!editId}
-              onCancel={resetForm}
+          {/* ✅ 섹션 간격 확보 */}
+          <div className="manage-stack">
+            <ScheduleFormCard
+              editId={editId}
+              title={title}
+              setTitle={setTitle}
+              start={start}
+              setStart={setStart}
+              end={end}
+              setEnd={setEnd}
               onSubmit={onSubmit}
+              onCancel={resetForm}
+            />
+
+            <MyEventsTable
+              rows={myEvents}
+              columns={columns}
+              colorOptions={COLOR_OPTIONS}
+              getColorStyle={getColorStyle}
+              toDateInputValue={toDateInputValue}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onOpenMemo={onOpenMemo}
             />
           </div>
-
-          <EventTable
-            title="일정 목록"
-            columns={columns}
-            rows={myEvents}
-            emptyText="등록된 개인 일정이 없습니다."
-            className="manage-table-wide"
-            renderRow={(row) => {
-              const c = getColorStyle(row.color || "blue");
-              const label =
-                COLOR_OPTIONS.find((x) => x.key === (row.color || "blue"))
-                  ?.label || "보통";
-
-              return (
-                <tr key={row.id}>
-                  <td className="title-cell">
-                    <div className="title-line">{row.title}</div>
-                    {row.memo ? (
-                      <div className="memo-preview">{row.memo}</div>
-                    ) : null}
-                  </td>
-
-                  <td>
-                    <span
-                      className="importance-badge"
-                      style={{
-                        background: c.bg,
-                        borderColor: c.border,
-                        color: c.text,
-                      }}
-                      title={row.color}
-                    >
-                      {label}
-                    </span>
-                  </td>
-
-                  <td>{toDateInputValue(row.start)}</td>
-                  <td>{toDateInputValue(row.end)}</td>
-
-                  <td>
-                    <div className="row-actions">
-                      <button
-                        className="btn"
-                        type="button"
-                        onClick={() => onEdit(row)}
-                      >
-                        수정
-                      </button>
-
-                      <button
-                        className="btn"
-                        type="button"
-                        onClick={() =>
-                          setMemoModal({
-                            id: row.id,
-                            title: row.title,
-                            memo: row.memo || "",
-                            color: row.color || "blue",
-                          })
-                        }
-                      >
-                        메모
-                      </button>
-
-                      <button
-                        className="btn danger"
-                        type="button"
-                        onClick={() => onDelete(row.id)}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            }}
-          />
-        </div>
+        </>
       }
     >
       <MonthCalendar events={fcEvents} onEventClick={onCalendarClick} />
@@ -331,64 +261,13 @@ export default function EventsManage() {
         있어요.
       </div>
 
-      {memoModal && (
-        <div className="memo-overlay" onClick={() => setMemoModal(null)}>
-          <div className="memo-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="memo-title">{memoModal.title}</div>
-
-            <div className="memo-colors">
-              {COLOR_OPTIONS.map((opt) => {
-                const active = memoModal.color === opt.key;
-                return (
-                  <button
-                    key={opt.key}
-                    type="button"
-                    className={`color-pill ${active ? "active" : ""}`}
-                    onClick={() =>
-                      setMemoModal((prev) => ({ ...prev, color: opt.key }))
-                    }
-                    style={{
-                      borderColor: active ? opt.border : "var(--border)",
-                      background: active ? opt.bg : "transparent",
-                      color: active ? opt.text : "var(--text)",
-                    }}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <label className="memo-label">메모</label>
-            <textarea
-              className="memo-textarea"
-              value={memoModal.memo}
-              onChange={(e) =>
-                setMemoModal((prev) => ({ ...prev, memo: e.target.value }))
-              }
-              placeholder="예) 준비물, 링크, 체크할 내용 등을 적어두세요"
-              rows={7}
-            />
-
-            <div className="memo-actions">
-              <button
-                className="btn"
-                type="button"
-                onClick={() => setMemoModal(null)}
-              >
-                닫기
-              </button>
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={saveMemo}
-              >
-                저장
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <MemoModal
+        modal={memoModal}
+        colorOptions={COLOR_OPTIONS}
+        onClose={() => setMemoModal(null)}
+        onChange={(next) => setMemoModal(next)}
+        onSave={saveMemo}
+      />
     </CalendarFrame>
   );
 }

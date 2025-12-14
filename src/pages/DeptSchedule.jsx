@@ -155,14 +155,14 @@ export default function DeptSchedule() {
       { label: "시작", width: 140 },
       { label: "끝", width: 140 },
     ];
-    return admin ? [...base, { label: "관리", width: 170 }] : base;
+    return admin ? [...base, { label: "", width: 170 }] : base; 
+
   }, [admin]);
 
   return (
     <CalendarFrame
       className={`dept-page ${admin ? "is-admin" : "is-user"}`}
       title="학과 일정"
-      subtitle={`학과를 선택하면 해당 학과 일정만 표시됩니다.${admin ? " (관리자: CRUD 가능)" : ""}`}
       calendarTitle="학과 일정 캘린더"
       topRight={
         <select
@@ -193,7 +193,6 @@ export default function DeptSchedule() {
                 onStartChange={setStart}
                 endValue={end}
                 onEndChange={setEnd}
-                endOptionalLabel="(선택)"
                 primaryText={editId ? "저장" : "추가"}
                 showCancel={!!editId}
                 onCancel={resetForm}
