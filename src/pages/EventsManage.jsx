@@ -1,7 +1,12 @@
 // src/pages/EventsManage.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
-import { fetchEvents, createEvent, updateEvent, deleteEvent } from "../api/eventsApi";
+import {
+  fetchEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} from "../api/eventsApi";
 
 import CalendarFrame from "../components/CalendarFrame";
 import MonthCalendar from "../components/MonthCalendar";
@@ -18,9 +23,27 @@ function toDateInputValue(d) {
 }
 
 const COLOR_OPTIONS = [
-  { key: "red", label: "높음", bg: "#ef4444", border: "#dc2626", text: "#ffffff" },
-  { key: "blue", label: "보통", bg: "#3b82f6", border: "#2563eb", text: "#ffffff" },
-  { key: "green", label: "낮음", bg: "#22c55e", border: "#16a34a", text: "#ffffff" },
+  {
+    key: "red",
+    label: "높음",
+    bg: "#ef4444",
+    border: "#dc2626",
+    text: "#ffffff",
+  },
+  {
+    key: "blue",
+    label: "보통",
+    bg: "#3b82f6",
+    border: "#2563eb",
+    text: "#ffffff",
+  },
+  {
+    key: "green",
+    label: "낮음",
+    bg: "#22c55e",
+    border: "#16a34a",
+    text: "#ffffff",
+  },
 ];
 
 function getColorStyle(colorKey) {
@@ -100,7 +123,8 @@ export default function EventsManage() {
 
     if (!title.trim()) return setErrMsg("제목을 입력하세요.");
     if (!start) return setErrMsg("시작 날짜를 선택하세요.");
-    if (end && end < start) return setErrMsg("끝 날짜는 시작 날짜보다 빠를 수 없습니다.");
+    if (end && end < start)
+      return setErrMsg("끝 날짜는 시작 날짜보다 빠를 수 없습니다.");
 
     try {
       if (editId) {
@@ -109,7 +133,9 @@ export default function EventsManage() {
           start,
           end: end || "",
         });
-        setEvents((prev) => prev.map((x) => (String(x.id) === String(editId) ? updated : x)));
+        setEvents((prev) =>
+          prev.map((x) => (String(x.id) === String(editId) ? updated : x))
+        );
       } else {
         const created = await createEvent({
           title: title.trim(),
@@ -167,7 +193,9 @@ export default function EventsManage() {
     try {
       const patch = { memo: memoModal.memo, color: memoModal.color };
       const updated = await updateEvent(memoModal.id, patch);
-      setEvents((prev) => prev.map((x) => (String(x.id) === String(memoModal.id) ? updated : x)));
+      setEvents((prev) =>
+        prev.map((x) => (String(x.id) === String(memoModal.id) ? updated : x))
+      );
       setMemoModal(null);
     } catch (e) {
       setErrMsg(e?.message || "메모 저장 실패");
@@ -191,7 +219,7 @@ export default function EventsManage() {
       subtitle="로그인한 사용자 기준으로 개인 일정을 관리합니다."
       calendarTitle="내 일정 캘린더"
       bottom={
-        <>
+        <div className="manage-stack">
           {(loading || errMsg) && (
             <p className={`form-msg ${errMsg ? "error" : ""}`}>
               {loading ? "불러오는 중..." : errMsg}
@@ -199,7 +227,9 @@ export default function EventsManage() {
           )}
 
           <div className="card">
-            <div className="card-title">{editId ? "일정 수정" : "새 일정 추가"}</div>
+            <div className="card-title">
+              {editId ? "일정 수정" : "새 일정 추가"}
+            </div>
 
             <FormGrid
               titleValue={title}
@@ -224,19 +254,26 @@ export default function EventsManage() {
             renderRow={(row) => {
               const c = getColorStyle(row.color || "blue");
               const label =
-                COLOR_OPTIONS.find((x) => x.key === (row.color || "blue"))?.label || "보통";
+                COLOR_OPTIONS.find((x) => x.key === (row.color || "blue"))
+                  ?.label || "보통";
 
               return (
                 <tr key={row.id}>
                   <td className="title-cell">
                     <div className="title-line">{row.title}</div>
-                    {row.memo ? <div className="memo-preview">{row.memo}</div> : null}
+                    {row.memo ? (
+                      <div className="memo-preview">{row.memo}</div>
+                    ) : null}
                   </td>
 
                   <td>
                     <span
                       className="importance-badge"
-                      style={{ background: c.bg, borderColor: c.border, color: c.text }}
+                      style={{
+                        background: c.bg,
+                        borderColor: c.border,
+                        color: c.text,
+                      }}
                       title={row.color}
                     >
                       {label}
@@ -248,7 +285,11 @@ export default function EventsManage() {
 
                   <td>
                     <div className="row-actions">
-                      <button className="btn" type="button" onClick={() => onEdit(row)}>
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={() => onEdit(row)}
+                      >
                         수정
                       </button>
 
@@ -267,7 +308,11 @@ export default function EventsManage() {
                         메모
                       </button>
 
-                      <button className="btn danger" type="button" onClick={() => onDelete(row.id)}>
+                      <button
+                        className="btn danger"
+                        type="button"
+                        onClick={() => onDelete(row.id)}
+                      >
                         삭제
                       </button>
                     </div>
@@ -276,13 +321,14 @@ export default function EventsManage() {
               );
             }}
           />
-        </>
+        </div>
       }
     >
       <MonthCalendar events={fcEvents} onEventClick={onCalendarClick} />
 
       <div className="manage-hint">
-        💡 일정 바를 클릭하면 <b>메모</b>와 <b>중요도</b>(색상)을 설정할 수 있어요.
+        💡 일정 바를 클릭하면 <b>메모</b>와 <b>중요도</b>(색상)을 설정할 수
+        있어요.
       </div>
 
       {memoModal && (
@@ -298,7 +344,9 @@ export default function EventsManage() {
                     key={opt.key}
                     type="button"
                     className={`color-pill ${active ? "active" : ""}`}
-                    onClick={() => setMemoModal((prev) => ({ ...prev, color: opt.key }))}
+                    onClick={() =>
+                      setMemoModal((prev) => ({ ...prev, color: opt.key }))
+                    }
                     style={{
                       borderColor: active ? opt.border : "var(--border)",
                       background: active ? opt.bg : "transparent",
@@ -315,16 +363,26 @@ export default function EventsManage() {
             <textarea
               className="memo-textarea"
               value={memoModal.memo}
-              onChange={(e) => setMemoModal((prev) => ({ ...prev, memo: e.target.value }))}
+              onChange={(e) =>
+                setMemoModal((prev) => ({ ...prev, memo: e.target.value }))
+              }
               placeholder="예) 준비물, 링크, 체크할 내용 등을 적어두세요"
               rows={7}
             />
 
             <div className="memo-actions">
-              <button className="btn" type="button" onClick={() => setMemoModal(null)}>
+              <button
+                className="btn"
+                type="button"
+                onClick={() => setMemoModal(null)}
+              >
                 닫기
               </button>
-              <button className="btn btn-primary" type="button" onClick={saveMemo}>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={saveMemo}
+              >
                 저장
               </button>
             </div>

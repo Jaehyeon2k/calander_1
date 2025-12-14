@@ -1,46 +1,16 @@
 /* =========================================================
-   DeptSchedule - Clean Layout (no heavy cards / minimal borders)
+   DeptSchedule (dept.css)
    목표:
-   - 캘린더는 크게, 박스 테두리 없이 깔끔하게
-   - 아래 CRUD는 섹션 분리만 얇게
-   - 폭 넓게(글씨 안 잘림)
+   - 공통 UI(ui.css / theme.css / layout.css)를 "절대" 덮어쓰지 않기
+   - 학과일정 페이지(.dept-page) 안에서만 필요한 것만 추가
+   - 테이블은 공통 EventTable이 쓰므로, 충돌 최소 범위로 기본 스타일 제공
 ========================================================= */
 
-/* ---- 페이지 컨테이너(폭 넓게) ---- */
-.page-wide{
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 18px 18px 64px;
-}
-
-/* 상단 헤더(타이틀 + 설명) */
-.page-head{
-  display: grid;
-  gap: 8px;
-  justify-items: start;
-  margin-bottom: 14px;
-}
-
-.page-title{
-  margin: 0;
-  font-weight: 900;
-  letter-spacing: -0.2px;
-}
-
-.page-subtitle{
-  margin: 0;
-  opacity: .7;
-}
-
-/* 학과 선택 영역: 가운데, 깔끔하게 */
-.page-actions{
-  display: flex;
-  justify-content: start;
-  margin: 12px 0 14px;
-}
-
-/* select (기존 dept-select 활용) */
-.dept-select{
+/* -----------------------------------------
+  DeptSchedule: select (학과 선택)
+  - 공통 input 스타일을 따르되, 화살표/드롭다운만 보정
+----------------------------------------- */
+.dept-page .dept-select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -52,9 +22,9 @@
   padding: 12px 44px 12px 14px;
   border-radius: 14px;
   border: 1px solid var(--input-border);
-  background: rgba(255,255,255,.04);
+  background: var(--input-bg);
   color: var(--text);
-  font-weight: 900;
+  font-weight: 800;
   cursor: pointer;
 
   background-image:
@@ -65,258 +35,92 @@
     calc(100% - 16px) 52%;
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
+
+  /* ✅ 다크/라이트 드롭다운 테마 힌트 */
+  color-scheme: light dark;
 }
 
-.dept-select:hover{ filter: brightness(1.03); }
-.dept-select:focus{
+.dept-page .dept-select:hover {
+  filter: brightness(1.03);
+}
+
+.dept-page .dept-select:focus {
   outline: none;
-  border-color: rgba(47,109,246,.6);
-  box-shadow: 0 0 0 3px rgba(47,109,246,.18);
+  border-color: rgba(47, 109, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(47, 109, 246, 0.18);
 }
 
-/* =========================================================
-   캘린더 영역: "박스" 느낌 제거 + 넓게
-========================================================= */
-.calendar-shell{
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 8px 0 0;              /* 박스 padding 최소 */
-  background: transparent;        /* ✅ 카드 배경 제거 */
-  border: 0;                      /* ✅ 테두리 제거 */
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* 캘린더 헤더(내부 제목 텍스트만) */
-.card-title{
-  margin: 0 0 8px;
-  font-weight: 900;
-  opacity: .92;
-}
-
-
-
-/* FullCalendar: 글씨/버튼 */
-.fc-clean .fc .fc-toolbar-title{
-  font-size: 34px;
-  font-weight: 900;
-  letter-spacing: -0.4px;
-}
-
-.fc-clean .fc .fc-button{
-  border-radius: 12px !important;
-  border: 1px solid rgba(255,255,255,.18) !important;
-  background: rgba(255,255,255,.06) !important;
-  color: rgba(255,255,255,.82) !important;
-  font-weight: 900 !important;
-  box-shadow: none !important;
-  padding: 8px 14px !important;
-}
-
-.fc-clean .fc .fc-button:hover{ filter: brightness(1.03); }
-.fc-clean .fc .fc-button:focus{ box-shadow: none !important; }
-
-/* 요일/날짜 */
-.fc-clean .fc .fc-col-header-cell-cushion{
-  font-weight: 900;
-  color: rgba(255,255,255,.78) !important;
-}
-.fc-clean .fc .fc-daygrid-day-number{
-  font-weight: 900;
-  color: rgba(255,255,255,.78) !important;
-}
-.fc-clean .fc .fc-day-other .fc-daygrid-day-number{
-  color: rgba(255,255,255,.24) !important;
-}
-.fc-clean .fc .fc-daygrid-day.fc-day-today{
-  background: rgba(47,109,246,.10) !important;
-  border-radius: 14px;
-}
-
-/* ✅ 이벤트 2줄/잘림 방지(너가 원했던 핵심 유지) */
-.fc-clean .fc .fc-daygrid-event{
-  border-radius: 10px !important;
-  border: none !important;
-  padding: 3px 8px !important;
-  font-weight: 900;
-  white-space: normal !important;
-  height: auto !important;
-  line-height: 1.2 !important;
-}
-.fc-clean .fc .fc-daygrid-event .fc-event-title{
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  display: -webkit-box !important;
-  -webkit-box-orient: vertical !important;
-  word-break: keep-all;
-}
-.fc-clean .fc .fc-daygrid-event-harness{
-  overflow: visible !important;
-}
-.fc-clean .fc .fc-daygrid-day-frame{
-  min-height: 120px;
-}
-
-/* =========================================================
-   아래 CRUD 섹션: "카드 박스" 없애고 라인으로만 구분
-========================================================= */
-
-/* 공통 섹션 래퍼 */
-.dept-section{
-  width: 100%;
-  margin: 18px auto 0;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255,255,255,.10); /* ✅ 구분선만 */
-}
-
-/* “새 일정 추가” 제목 */
-.dept-section-title{
-  margin: 0 0 12px;
-  font-weight: 900;
-}
-
-/* 폼: 한 줄 입력 */
-.dept-form-grid{
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr auto;
-  gap: 12px;
-  align-items: end;
-}
-
-.field{ display: grid; gap: 6px; }
-.field label{ font-size: 13px; opacity: .75; }
-
-.input{
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
+/* ✅ 옵션(드롭다운) 배경이 하얗게 떠서 글씨 안보이는 문제 방지 */
+.dept-page .dept-select option {
+  background: var(--surface);
   color: var(--text);
-  outline: none;
-}
-.input:focus{
-  border-color: rgba(47,109,246,.6);
-  box-shadow: 0 0 0 3px rgba(47,109,246,.18);
 }
 
-.dept-form-actions{
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  align-items: center;
-}
-.check{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  user-select: none;
-  opacity: .9;
-}
-
-/* 버튼(기존 .btn 사용해도 되지만 dept에서만 더 깔끔하게) */
-.btn{
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
-  color: var(--text);
-  border-radius: 12px;
-  padding: 12px 14px;
-  cursor: pointer;
-  font-weight: 900;
-}
-.btn:hover{ filter: brightness(1.04); }
-.btn:active{ transform: translateY(1px); }
-
-.btn.danger{
-  border-color: rgba(255,80,80,.35);
-  color: rgba(255,80,80,.95);
-}
-
-/* 리스트 테이블: 박스 없이 라인만 */
-.table{
+/* -----------------------------------------
+  Table base (EventTable 공통)
+  - 전역 .table은 충돌 위험 → 카드 안에 있는 테이블만 기본 스타일 제공
+----------------------------------------- */
+.card .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
-.table th,
-.table td{
+.card .table th,
+.card .table td {
   padding: 12px 10px;
-  border-bottom: 1px solid rgba(255,255,255,.10);
+  border-bottom: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
 }
 
-.table th{
-  font-weight: 900;
-  opacity: .9;
+.card .table th {
+  font-weight: 800;
+  opacity: 0.9;
 }
 
-.row-actions{
-  display: inline-flex;
-  gap: 8px;
-}
+/* -----------------------------------------
+  DeptSchedule table tweaks
+----------------------------------------- */
 
-/* 제목 컬럼: 줄바꿈 허용(긴 글씨 안 잘리게) */
-.table td:first-child{
+/* 제목 컬럼: 긴 글씨 줄바꿈 허용 */
+.dept-page .table td:first-child {
   white-space: normal;
   word-break: keep-all;
 }
 
-/* 반응형 */
-@media (max-width: 900px){
-  .dept-form-grid{ grid-template-columns: 1fr; }
-  .dept-form-actions{ justify-content: flex-start; }
-  .dept-select{ width: 100%; }
-  .fc-clean{ padding: 10px; }
-}
-/* ✅ 다크모드에서 select 옵션 드롭다운 하얗게 뜨는 거 방지 */
-.dept-select {
-  background-color: var(--surface);   /* 기존 rgba 대신 표면색으로 */
-  color: var(--text);
-  color-scheme: light dark;            /* 일부 브라우저에서 옵션 테마 힌트 */
+/* 관리 버튼 줄 */
+.dept-page .row-actions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap; /* 화면 좁을 때 버튼 줄바꿈 */
 }
 
-.dept-select option {
-  background: var(--surface);
-  color: var(--text);
-}
-.dept-page.is-user .table th,
-.dept-page.is-user .table td{
-  border-bottom: 0 !important;
-}/* ✅ 테이블 선 제거 + 패딩으로 가독성 확보 */
-.dept-page .table{
-  border-collapse: separate;
-  border-spacing: 0 10px; /* 행 사이 간격 */
+/* danger 버튼(삭제)만 dept에서 조금 더 또렷하게 */
+.dept-page .btn.danger {
+  border-color: rgba(255, 80, 80, 0.35);
+  color: rgba(255, 80, 80, 0.95);
 }
 
-.dept-page .table th,
-.dept-page .table td{
-  border-bottom: 0 !important;   /* 선 제거 */
-  padding: 14px 16px;            /* 패딩 업 */
-}
-
-/* 행을 카드처럼 보이게(선 없이 구분) */
-.dept-page .table tbody tr td{
-  background: rgba(255,255,255,.04);
-}
-
-.dept-page .table tbody tr td:first-child{
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-.dept-page .table tbody tr td:last-child{
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-.dept-page .table tbody tr:hover td{
-  background: rgba(255,255,255,.07);
-}
-.dept-page .manage-panel + .card{
-  margin-top: 18px;
-}/* ✅ 관리자일 때: 새 일정 추가 카드 아래 리스트에 여백 */
+/* -----------------------------------------
+  Spacing: 관리자일 때 카드 간격 보정
+  (CalendarFrame이 section-divider 넣고 bottom에 card들이 이어서 렌더됨)
+----------------------------------------- */
 .dept-page.is-admin .card + .card {
-  margin-top: 28px;
+  margin-top: 18px;
+}
+
+/* -----------------------------------------
+  Responsive
+----------------------------------------- */
+@media (max-width: 900px) {
+  .dept-page .dept-select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dept-page .row-actions {
+    gap: 6px;
+  }
 }

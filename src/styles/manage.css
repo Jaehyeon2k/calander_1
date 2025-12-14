@@ -1,166 +1,38 @@
-/* 공통 섹션 */
-.section-divider {
-  margin: 28px 0;
-  border-top: 1px solid rgba(255,255,255,.12);
-}
+/* =========================================================
+   EventsManage (내 일정 관리) - final
+   - 카드 간격(새 일정 추가 / 일정 목록) : manage-stack
+   - 테이블: 제목 칸 줄바꿈 + 메모 미리보기 말줄임
+   - 액션 버튼: 가로 고정
+   - 메모 모달 UI
+   - fc-clean: 라이트/다크 공통 버튼/오늘 표시
+========================================================= */
 
-.section-title {
-  font-weight: 900;
-  margin-bottom: 12px;
-}
-
-/* manage / dept 공통 패널 */
-.manage-panel {
+/* ✅ 아래 섹션(폼 카드 / 목록 카드) 간격 */
+.manage-stack{
+  display: grid;
+  gap: 18px;
   margin-top: 14px;
 }
 
-.manage-panel-title {
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-
-/* 폼 */
-.manage-form-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr auto auto;
-  gap: 12px;
-  align-items: center;
-}
-
-@media (max-width: 900px) {
-  .manage-form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* ===== manage table = dept table ===== */
-
-.manage-table-wide {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.manage-table-wide th,
-.manage-table-wide td {
-  padding: 14px 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  text-align: left;
-  vertical-align: middle;
-}
-
-.manage-table-wide th {
-  font-weight: 900;
-  opacity: 0.9;
-}
-
-/* 제목 길어도 깨지지 않게 */
-.manage-table-wide td:first-child {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 관리 버튼 영역 */
-.row-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.row-actions .btn {
-  padding: 8px 14px;
-  border-radius: 12px;
-  font-weight: 800;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.row-actions .btn.danger {
-  border-color: rgba(255,80,80,.4);
-  color: rgba(255,80,80,.95);
-}
-/* =========================
-   Manage Page – Card Style
-   (내 일정 관리 화면 전용)
-========================= */
-
-/* 새 일정 추가 카드 */
-.manage-form {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: var(--shadow);
-}
-
-/* 입력폼 한 줄 정렬 (오른쪽 스샷 스타일) */
-.manage-form-grid {
-  grid-template-columns: 2fr 1fr 1fr auto auto;
-}
-
-/* 일정 목록 카드 */
-.manage-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: var(--shadow);
-}
-
-/* 제목 컬럼 줄바꿈 허용 (왼쪽 스샷 문제 해결 핵심) */
-.manage-table-wide td:first-child {
-  white-space: normal;
-  word-break: keep-all;
-}
-
-/* 모바일 대응 */
-@media (max-width: 900px) {
-  .manage-form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* ✅ fc-clean 라이트/다크 공통 (하드코딩 흰색 제거) */
-.fc-clean .fc .fc-button{
-  border-radius: 12px !important;
-  border: 1px solid var(--fc-button-border) !important;
-  background: var(--fc-button-bg) !important;
-  color: var(--fc-button-text) !important;
-  font-weight: 900 !important;
-  box-shadow: none !important;
-  padding: 8px 14px !important;
-}
-
-.fc-clean .fc .fc-col-header-cell-cushion{
-  font-weight: 900;
-  color: var(--muted) !important;
-}
-.fc-clean .fc .fc-daygrid-day-number{
-  font-weight: 900;
-  color: var(--muted) !important;
-}
-.fc-clean .fc .fc-day-other .fc-daygrid-day-number{
-  opacity: .35;
-}
-
-.fc-clean .fc .fc-daygrid-day.fc-day-today{
-  background: var(--fc-today-bg) !important;
-  border-radius: 14px;
-}
-/* =========================
-   EventsManage - Memo Modal
-   (기존 page-wide / manage-panel 스타일은 유지)
-========================= */
-
+/* -------------------------
+   테이블/행 UI
+------------------------- */
 .manage-hint{
   margin-top: 10px;
   font-size: 13px;
   opacity: .75;
 }
 
+.manage-table-wide td:first-child{
+  white-space: normal;
+  word-break: keep-all;
+}
+
+/* 제목 + 메모 미리보기 */
 .title-cell .title-line{
   font-weight: 700;
 }
+
 .memo-preview{
   margin-top: 6px;
   font-size: 12px;
@@ -168,10 +40,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 520px;
 }
 
-/* 중요도 뱃지 */
+/* 모바일에서 메모 미리보기 너무 길면 줄이기 */
+@media (max-width: 640px){
+  .memo-preview{ max-width: 240px; }
+}
+
+/* 중요도 뱃지(색상은 inline style로 들어오니까 틀만 잡기) */
 .importance-badge{
   display: inline-flex;
   align-items: center;
@@ -181,53 +57,85 @@
   border: 1px solid var(--border);
   font-weight: 900;
   font-size: 12px;
-  line-height: 1;
+  white-space: nowrap;
 }
 
-/* ===== 모달 ===== */
+/* -------------------------
+   액션 버튼 (수정/메모/삭제) 가로 정렬
+------------------------- */
+.row-actions{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  flex-wrap: nowrap;     /* 줄바꿈 금지 */
+  white-space: nowrap;   /* 텍스트 줄바꿈 금지 */
+}
+
+/* 버튼이 좁아도 찌그러지지 않게 */
+.row-actions .btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 56px;
+  padding: 6px 10px;
+}
+
+/* danger 버튼 보정 (기존 rgba 값 오류 수정) */
+.row-actions .btn.danger{
+  border-color: rgba(255, 80, 80, 0.40);
+  color: rgba(255, 80, 80, 0.95);
+}
+
+/* -------------------------
+   Memo Modal
+------------------------- */
 .memo-overlay{
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3000;
+  background: rgba(0,0,0,.55);
+  display: grid;
+  place-items: center;
   padding: 16px;
+  z-index: 9999;
 }
 
 .memo-modal{
-  width: 460px;
-  max-width: 100%;
+  width: min(560px, 100%);
   background: var(--surface);
-  color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
   box-shadow: var(--shadow);
-  padding: 16px;
+  padding: 18px;
 }
 
 .memo-title{
   font-weight: 900;
-  font-size: 18px;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
 }
 
 .memo-colors{
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
   flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
 }
 
 .color-pill{
-  padding: 8px 10px;
-  border-radius: 999px;
   border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 12px;
   cursor: pointer;
   font-weight: 900;
-  font-size: 12px;
-  background: transparent;
+}
+
+.color-pill.active{
+  filter: brightness(1.02);
 }
 
 .memo-label{
@@ -247,6 +155,11 @@
   outline: none;
 }
 
+.memo-textarea:focus{
+  border-color: rgba(47, 109, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(47, 109, 246, 0.18);
+}
+
 .memo-actions{
   display: flex;
   justify-content: flex-end;
@@ -254,33 +167,34 @@
   margin-top: 14px;
 }
 
-/* 모바일에서 테이블 메모 미리보기 너무 길면 줄이기 */
-@media (max-width: 640px){
-  .memo-preview{ max-width: 240px; }
-}
-/* 관리 버튼 가로 정렬 */
-.row-actions{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-
-  flex-wrap: nowrap;     /* ✅ 줄바꿈 금지 */
-  white-space: nowrap;   /* ✅ 텍스트도 줄바꿈 금지 */
+/* -------------------------
+   FullCalendar (fc-clean) - 라이트/다크 공통
+------------------------- */
+.fc-clean .fc .fc-button{
+  border-radius: 12px !important;
+  border: 1px solid var(--fc-button-border) !important;
+  background: var(--fc-button-bg) !important;
+  color: var(--fc-button-text) !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+  padding: 8px 14px !important;
 }
 
-/* 버튼이 좁아도 찌그러지지 않게 */
-.row-actions .btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;        /* ✅ 줄어들면서 세로로 내려가는거 방지 */
-  min-width: 56px;       /* 필요하면 50~70 조절 */
-  padding: 6px 10px;     /* 너 버튼 스타일에 맞춰 조절 */
+.fc-clean .fc .fc-col-header-cell-cushion{
+  font-weight: 900;
+  color: var(--muted) !important;
 }
 
-/* 삭제 버튼도 동일 쇼트하게 */
-.row-actions .btn.danger{
-  min-width: 56px;
+.fc-clean .fc .fc-daygrid-day-number{
+  font-weight: 900;
+  color: var(--muted) !important;
+}
+
+.fc-clean .fc .fc-day-other .fc-daygrid-day-number{
+  opacity: .35;
+}
+
+.fc-clean .fc .fc-daygrid-day.fc-day-today{
+  background: var(--fc-today-bg) !important;
+  border-radius: 14px;
 }
